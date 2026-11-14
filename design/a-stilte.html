@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="nl" data-state="gebaar">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gebaren · Richting A: Stilte</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;700&amp;display=swap">
+<link rel="stylesheet" href="shared/base.css">
+<style>
+/* Richting A, Stilte: one calm centred column. The video sits in a soft frame; everything around it is quiet. */
+:root {
+  --bg: #F3F5F7; --surface: #FFFFFF; --text: #0F1724; --muted: #3A4556; --line: #D5DCE4;
+  --border: #6B7686; --accent: #0B4F8A; --on-accent: #FFFFFF; --weak: #E3ECF6; --stage: #E4E9EF;
+  --focus: #B43C00; --video-filter: none;
+  --font: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", Verdana, system-ui, sans-serif;
+  --gutter: max(1rem, env(safe-area-inset-left, 0px));
+  --gutter-r: max(1rem, env(safe-area-inset-right, 0px));
+  --radius: 0.875rem;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E1217; --surface: #161B22; --text: #EEF2F7; --muted: #B7C2D0; --line: #2A323D;
+    --border: #7C8898; --accent: #93C5FD; --on-accent: #08213D; --weak: #1C2B3D; --stage: #1D242D;
+    --focus: #FFB070; --video-filter: brightness(0.88); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E1217; --surface: #161B22; --text: #EEF2F7; --muted: #B7C2D0; --line: #2A323D;
+  --border: #7C8898; --accent: #93C5FD; --on-accent: #08213D; --weak: #1C2B3D; --stage: #1D242D;
+  --focus: #FFB070; --video-filter: brightness(0.88); color-scheme: dark;
+}
+
+body { background: var(--bg); color: var(--text); font: 400 1.25rem/1.6 var(--font); }
+a { color: var(--accent); text-underline-offset: 0.18em; text-decoration-thickness: 0.08em; }
+a:hover { text-decoration-thickness: 0.14em; }
+.wrap { width: 100%; max-width: 72rem; margin-inline: auto; padding-left: var(--gutter); padding-right: var(--gutter-r); }
+
+/* ---------- Header and search ---------- */
+.top { background: var(--surface); border-bottom: 1px solid var(--line); }
+.top__in { display: grid; grid-template-columns: auto 1fr auto; grid-template-areas: "brand . help" "search search search";
+  align-items: center; gap: 0.5rem 1.5rem; padding-block: 0.6rem 1rem; }
+.brand { grid-area: brand; display: inline-flex; align-items: center; gap: 0.6rem; color: var(--text);
+  text-decoration: none; font-weight: 700; font-size: 1.5rem; letter-spacing: -0.01em; min-height: 2.75rem; }
+.brand__mark { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 50%;
+  background: var(--accent); color: var(--on-accent); }
+.brand__mark .i { width: 1.5rem; height: 1.5rem; stroke-width: 1.8; }
+.help { grid-area: help; display: inline-flex; align-items: center; gap: 0.5rem; min-height: 2.75rem;
+  font-size: 1.0625rem; font-weight: 700; color: var(--text); text-decoration: none; }
+.help:hover { text-decoration: underline; }
+.search { grid-area: search; }
+.search__label { display: block; font-weight: 700; font-size: 1.125rem; margin-bottom: 0.4rem; }
+.search__row { display: flex; gap: 0.75rem; }
+.combo { position: relative; flex: 1; min-width: 0; }
+.combo .i { position: absolute; left: 1rem; top: 1.05rem; width: 1.5rem; height: 1.5rem; color: var(--muted); pointer-events: none; }
+.combo input { width: 100%; min-height: 3.6rem; padding: 0.5rem 1rem 0.5rem 3.25rem; font-size: 1.375rem;
+  background: var(--surface); color: var(--text); border: 2px solid var(--border); border-radius: var(--radius); }
+.combo input:focus-visible { outline-offset: 0.125rem; }
+.combo input[aria-invalid="true"] { border-width: 3px; border-color: var(--focus); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem; min-height: 3rem;
+  padding: 0.5rem 1.15rem; border: 2px solid var(--border); border-radius: var(--radius); background: var(--surface);
+  color: var(--text); font-weight: 700; font-size: 1.125rem; line-height: 1.2; text-decoration: none; }
+.btn:hover { background: var(--weak); }
+.btn--primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn--primary:hover { background: var(--accent); filter: brightness(1.08); }
+.search__go { min-height: 3.6rem; padding-inline: 1.4rem; font-size: 1.25rem; }
+.search__hint { margin-top: 0.4rem; font-size: 1rem; color: var(--muted); }
+@media (max-width: 40rem) { [data-state="gebaar"] .search__hint { display: none; } }
+.search__error { display: flex; gap: 0.5rem; align-items: center; margin-top: 0.4rem; font-weight: 700; font-size: 1.0625rem; }
+.search__error .i { color: var(--focus); }
+#suggest { margin-top: 0.5rem; padding: 0.35rem; background: var(--surface); border: 2px solid var(--border);
+  border-radius: var(--radius); max-height: 21rem; overflow: auto; }
+#suggest [role="option"] { display: flex; align-items: center; min-height: 3rem; padding: 0.35rem 0.9rem;
+  border-radius: 0.6rem; font-size: 1.3125rem; }
+#suggest [role="option"]:hover { background: var(--weak); }
+#suggest [aria-selected="true"] { background: var(--weak); box-shadow: inset 0 0 0 2px var(--accent); }
+
+/* ---------- Main ---------- */
+main { display: block; padding-block: clamp(1.25rem, 3vw, 2.25rem) 3rem; }
+main:focus { outline: none; }
+.eyebrow { font-size: 1.0625rem; color: var(--muted); }
+.word { font-size: clamp(2.75rem, 1.6rem + 4.6vw, 5rem); line-height: 1.02; letter-spacing: -0.02em; font-weight: 700; }
+h1:focus { outline: none; }
+h2 { font-size: 1.375rem; line-height: 1.3; }
+
+/* Gebaar */
+.entry__head { display: grid; grid-template-columns: 1fr auto; grid-template-areas: "word fav" "variants variants";
+  align-items: end; gap: 1rem 1.5rem; margin-bottom: 1.25rem; }
+.entry__word { grid-area: word; min-width: 0; }
+.fav { grid-area: fav; }
+.fav .i { width: 1.4rem; height: 1.4rem; }
+.fav[aria-pressed="true"] { background: var(--weak); border-color: var(--accent); }
+.fav[aria-pressed="true"] .i-star { fill: currentColor; }
+.variants { grid-area: variants; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; }
+@media (min-width: 56rem) {
+  .entry__head { grid-template-columns: auto 1fr auto; grid-template-areas: "word variants fav"; column-gap: 2.5rem; }
+  .variants { padding-bottom: 0.35rem; }
+  .word { font-size: clamp(2.75rem, 1.5rem + 2.6vw, 4rem); }
+}
+.variants__note { font-size: 1.0625rem; color: var(--muted); }
+.tabs { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tabs [role="tab"] { min-height: 3rem; padding: 0.4rem 1.25rem; border-radius: 999px; border: 2px solid var(--border);
+  background: var(--surface); color: var(--text); font-weight: 700; font-size: 1.125rem; }
+.tabs [role="tab"][aria-selected="true"] { background: var(--text); border-color: var(--text); color: var(--bg); }
+
+.stage { --vmax: clamp(15rem, calc(100svh - 24.5rem), 76vh); width: min(100% - 2rem, 70rem); margin-inline: auto;
+  padding: clamp(0.5rem, 1vw, 0.75rem); background: var(--stage); border-radius: calc(var(--radius) + 0.4rem); }
+.stage video { width: min(100%, calc(var(--vmax) * 16 / 9)); aspect-ratio: 16 / 9; height: auto; margin-inline: auto;
+  object-fit: contain; background: var(--stage); border-radius: 0.6rem; }
+.controls { display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch; gap: 0.75rem; margin-top: 1rem; }
+.ctl--main { min-width: 10rem; }
+.speed { display: inline-flex; align-items: stretch; border: 2px solid var(--border); border-radius: var(--radius);
+  background: var(--surface); overflow: hidden; }
+.speed__label { display: flex; align-items: center; padding-inline: 1rem; font-size: 1.0625rem; color: var(--muted); border-right: 1px solid var(--line); }
+.seg { display: inline-flex; align-items: center; gap: 0.35rem; min-height: 2.75rem; padding: 0.4rem 0.95rem; border: 0;
+  background: transparent; font-weight: 700; font-size: 1.0625rem; }
+.seg + .seg { border-left: 1px solid var(--line); }
+.seg[aria-pressed="true"] { background: var(--weak); box-shadow: inset 0 -0.25rem 0 var(--accent); }
+.seg .i { width: 1.1rem; height: 1.1rem; }
+.ctl[aria-pressed="true"] { background: var(--weak); border-color: var(--accent); }
+.meta { display: grid; gap: 0.6rem; margin-top: 1.5rem; max-width: 50rem; }
+.meaning { font-size: 1.375rem; }
+.note { display: flex; gap: 0.6rem; font-size: 1.0625rem; color: var(--muted); }
+.note .i { margin-top: 0.2rem; }
+.credit { font-size: 1rem; color: var(--muted); }
+.credit .i { display: inline; width: 1em; height: 1em; vertical-align: -0.1em; margin-left: 0.15em; }
+
+/* Niet gevonden */
+.notice { display: flex; gap: 1.25rem; align-items: flex-start; }
+.notice__icon { display: grid; place-items: center; flex: none; width: 4rem; height: 4rem; border-radius: 50%;
+  background: var(--weak); color: var(--accent); }
+.notice__icon .i { width: 2.1rem; height: 2.1rem; }
+.notice h1 { font-size: clamp(2rem, 1.4rem + 2.4vw, 3rem); line-height: 1.1; }
+.notice p { margin-top: 0.4rem; font-size: 1.25rem; }
+.nf { display: grid; gap: 2rem; max-width: 52rem; }
+.nf section { display: grid; gap: 0.75rem; }
+ul.tips { display: grid; gap: 0.5rem; padding-left: 1.25em; list-style: disc; }
+.elsewhere { padding: 1.1rem 1.25rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+
+/* Start */
+.intro { display: grid; gap: 1rem; max-width: 46rem; }
+.intro h1 { font-size: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem); line-height: 1.08; }
+.intro p { font-size: 1.375rem; }
+.steps { display: flex; flex-wrap: wrap; gap: 0.75rem 1.75rem; margin-top: 0.5rem; counter-reset: s; }
+.steps li { display: flex; align-items: center; gap: 0.6rem; font-size: 1.125rem; counter-increment: s; }
+.steps li::before { content: counter(s); display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%;
+  background: var(--surface); border: 2px solid var(--border); font-weight: 700; font-size: 1rem; }
+
+/* Lists and chips */
+.lists { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: 2rem 3rem; margin-top: 3rem;
+  padding-top: 2rem; border-top: 1px solid var(--line); }
+.lists section { display: grid; gap: 0.75rem; align-content: start; }
+.lists h2 { display: flex; align-items: center; gap: 0.6rem; }
+.chips { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.chip { display: inline-flex; align-items: center; min-height: 3rem; padding: 0.35rem 1.2rem; border-radius: 999px;
+  background: var(--surface); border: 2px solid var(--border); color: var(--text); font-weight: 700; font-size: 1.1875rem; text-decoration: none; }
+.chip:hover { background: var(--weak); }
+.linkbtn { justify-self: start; min-height: 2.75rem; padding: 0; border: 0; background: none; color: var(--accent);
+  text-decoration: underline; text-underline-offset: 0.18em; font-size: 1.0625rem; }
+
+/* Shortcuts */
+.keys { margin-top: 3rem; padding: 1.5rem; background: var(--surface); border: 1px solid var(--line); border-radius: calc(var(--radius) + 0.4rem); }
+.keys__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 2rem; }
+.keys h2 { display: flex; align-items: center; gap: 0.6rem; }
+.keys dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); gap: 0.6rem 2rem; margin-top: 1rem; }
+.keys dl div { display: flex; align-items: center; gap: 1rem; }
+.keys dt { flex: none; min-width: 5.5rem; }
+kbd { display: inline-block; min-width: 2rem; padding: 0.1rem 0.5rem; text-align: center; font: 700 1rem/1.5 var(--font);
+  background: var(--bg); border: 2px solid var(--border); border-bottom-width: 4px; border-radius: 0.45rem; }
+.keys .keys-toggle { font-size: 1.0625rem; }
+
+footer { border-top: 1px solid var(--line); background: var(--surface); }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem 2rem; padding-block: 1.5rem 2.5rem;
+  font-size: 1rem; color: var(--muted); }
+footer nav { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
+footer a { color: var(--text); }
+
+/* ---------- Wider screens ---------- */
+@media (min-width: 56rem) {
+  .top__in { grid-template-columns: auto minmax(0, 46rem) 1fr auto; grid-template-areas: "brand search . help"; align-items: end; }
+  .brand, .help { margin-bottom: 0.4rem; }
+}
+
+/* ---------- Phones: video edge to edge, controls in a grid ---------- */
+@media (max-width: 40rem) {
+  .stage { width: 100%; padding: 0; border-radius: 0; }
+  .stage video { border-radius: 0; }
+  .controls { display: grid; grid-template-columns: 1fr 1fr; padding-inline: var(--gutter) var(--gutter-r); }
+  .ctl--main { min-width: 0; }
+  .speed { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, 1fr); }
+  .speed__label { grid-column: 1 / -1; padding: 0.35rem 0.9rem; border-right: 0; border-bottom: 1px solid var(--line); }
+  .seg { justify-content: center; padding-inline: 0.4rem; font-size: 1rem; }
+  .seg + .seg { border-left: 1px solid var(--line); }
+  .seg:nth-child(2) { border-left: 0; }
+  .search__go { padding-inline: 1rem; }
+}
+
+/* ---------- Phone on its side: the video fills the height, controls beside it ---------- */
+@media (orientation: landscape) and (max-height: 32rem) {
+  .player { display: grid; grid-template-columns: auto minmax(13rem, 1fr); gap: 1rem; align-items: start;
+    padding-left: var(--gutter); padding-right: var(--gutter-r); }
+  .stage { width: auto; padding: 0; border-radius: 0.6rem; }
+  .stage video { --vmax: calc(100svh - 1.5rem); width: calc(var(--vmax) * 16 / 9); max-width: 100%; }
+  .controls { display: grid; grid-template-columns: 1fr; margin-top: 0; padding: 0; }
+  .speed { display: grid; grid-template-columns: 1fr; }
+  .speed__label { border-right: 0; border-bottom: 1px solid var(--line); }
+  .seg + .seg { border-left: 0; border-top: 1px solid var(--line); }
+  .player .meta { grid-column: 1 / -1; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#inhoud">Naar de inhoud</a>
+
+<header class="top">
+  <div class="wrap top__in">
+    <a class="brand" href="#start"><span class="brand__mark"><svg class="i" aria-hidden="true"><use href="#i-hands"/></svg></span>Gebaren</a>
+    <a class="help" href="#sneltoetsen"><svg class="i" aria-hidden="true"><use href="#i-keyboard"/></svg>Sneltoetsen</a>
+    <form class="search" role="search" data-search novalidate>
+      <label class="search__label" for="q">Zoek een woord</label>
+      <div class="search__row">
+        <div class="combo">
+          <svg class="i" aria-hidden="true"><use href="#i-search"/></svg>
+          <input id="q" name="q" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false"
+            aria-controls="suggest" aria-describedby="q-hint" autocomplete="off" autocapitalize="none" spellcheck="false" enterkeyhint="search">
+        </div>
+        <button class="btn btn--primary search__go" type="submit">Zoek</button>
+      </div>
+      <ul id="suggest" role="listbox" aria-label="Woorden" hidden></ul>
+      <p class="search__error" data-search-error hidden><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Typ eerst een woord. Daarna kies je Zoek.</p>
+      <p class="search__hint" id="q-hint" data-combo-hint>Bijvoorbeeld: huis, dank je of koffie.</p>
+    </form>
+  </div>
+</header>
+
+<main id="inhoud" tabindex="-1">
+
+  <!-- Start -->
+  <section class="wrap" data-view="start" data-query="hu" aria-labelledby="start-title">
+    <div class="intro">
+      <h1 id="start-title">Zoek een gebaar</h1>
+      <p>Typ een woord. Je ziet meteen het gebaar in Nederlandse Gebarentaal (NGT).</p>
+      <ol class="steps" aria-label="Zo werkt het">
+        <li>Typ een woord</li>
+        <li>Kies uit de lijst</li>
+        <li>Bekijk het gebaar</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Gebaar -->
+  <section data-view="gebaar" data-query="huis" data-status="Gebaar gevonden voor huis. Er zijn 2 gebaren." aria-labelledby="word">
+    <div class="wrap">
+      <div class="entry__head">
+        <div class="entry__word">
+          <p class="eyebrow">Gebaar in NGT voor</p>
+          <h1 id="word" class="word">huis</h1>
+        </div>
+        <div class="variants">
+          <p class="variants__note">Er zijn 2 gebaren voor dit woord.</p>
+          <div class="tabs" role="tablist" aria-label="Gebaren voor huis">
+            <button type="button" role="tab" id="tab-1" aria-selected="true" aria-controls="player"
+              data-src="media/huis-a.mp4" data-poster="media/huis-a.png" data-gloss="1954" data-meaning="huis, huisje, hok, schuur">Gebaar 1</button>
+            <button type="button" role="tab" id="tab-2" aria-selected="false" tabindex="-1" aria-controls="player"
+              data-src="media/huis-b.mp4" data-poster="media/huis-b.png" data-gloss="1300" data-meaning="huis, dak">Gebaar 2</button>
+          </div>
+        </div>
+        <button class="btn fav" type="button" data-action="fav" aria-pressed="false">
+          <svg class="i i-star" aria-hidden="true"><use href="#i-star"/></svg>Bewaar
+        </button>
+      </div>
+    </div>
+
+    <div id="player" class="player" role="tabpanel" aria-labelledby="tab-1" data-fs>
+      <div class="stage" data-stage>
+        <video src="media/huis-a.mp4" poster="media/huis-a.png" muted loop playsinline preload="auto"
+          aria-label="Video van het gebaar voor huis. De video heeft geen geluid." aria-describedby="meaning"></video>
+      </div>
+      <div class="controls" role="group" aria-label="Video bedienen">
+        <button class="btn btn--primary ctl--main" type="button" data-action="toggle">
+          <svg class="i" aria-hidden="true"><use href="#i-pause"/></svg><span data-label>Pauze</span>
+        </button>
+        <button class="btn" type="button" data-action="replay"><svg class="i" aria-hidden="true"><use href="#i-replay"/></svg>Opnieuw</button>
+        <div class="speed" role="group" aria-labelledby="speed-label">
+          <span class="speed__label" id="speed-label">Snelheid</span>
+          <button class="seg" type="button" data-speed="1" aria-pressed="true"><svg class="i i-on" aria-hidden="true"><use href="#i-check"/></svg>Normaal</button>
+          <button class="seg" type="button" data-speed="0.75" aria-pressed="false"><svg class="i i-on" aria-hidden="true"><use href="#i-check"/></svg>Langzaam</button>
+          <button class="seg" type="button" data-speed="0.5" aria-pressed="false"><svg class="i i-on" aria-hidden="true"><use href="#i-check"/></svg>Heel langzaam</button>
+        </div>
+        <button class="btn ctl" type="button" data-action="mirror" aria-pressed="false">
+          <svg class="i i-off" aria-hidden="true"><use href="#i-mirror"/></svg><svg class="i i-on" aria-hidden="true"><use href="#i-check"/></svg>Spiegel
+        </button>
+        <button class="btn" type="button" data-action="fullscreen"><svg class="i" aria-hidden="true"><use href="#i-fullscreen"/></svg>Volledig scherm</button>
+      </div>
+      <div class="wrap">
+        <div class="meta">
+          <p class="meaning" id="meaning"><strong>Dit gebaar betekent:</strong> <span data-meaning>huis, huisje, hok, schuur</span></p>
+          <p class="note"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><span>Met <strong>Spiegel</strong> zie je het gebaar zoals in een spiegel. Dat is handig als je het gebaar wilt nadoen.</span></p>
+          <p class="credit">Video: <a data-source href="https://signbank.cls.ru.nl/dictionary/gloss/1954">NGT Signbank<svg class="i" aria-hidden="true"><use href="#i-external"/></svg></a>,
+            Radboud Universiteit en Universiteit van Amsterdam. Licentie <a href="https://creativecommons.org/licenses/by/4.0/deed.nl">CC BY 4.0</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Niet gevonden -->
+  <section class="wrap" data-view="niet-gevonden" data-query="huisdier" data-status="Geen gebaar gevonden voor huisdier. Er zijn suggesties." aria-labelledby="nf-title">
+    <div class="nf">
+      <div class="notice">
+        <span class="notice__icon"><svg class="i" aria-hidden="true"><use href="#i-notfound"/></svg></span>
+        <div>
+          <h1 id="nf-title">Geen gebaar voor ‘<span data-echo>huisdier</span>’</h1>
+          <p>Dit woord staat niet in onze lijst.</p>
+        </div>
+      </div>
+      <section aria-labelledby="nf-mean">
+        <h2 id="nf-mean">Bedoel je misschien dit woord?</h2>
+        <ul class="chips"><li><a class="chip" href="#gebaar">huisdeur</a></li></ul>
+      </section>
+      <section aria-labelledby="nf-parts">
+        <h2 id="nf-parts">Of zoek de delen van het woord</h2>
+        <ul class="chips"><li><a class="chip" href="#gebaar">huis</a></li><li><a class="chip" href="#gebaar">dier</a></li></ul>
+      </section>
+      <section aria-labelledby="nf-tips">
+        <h2 id="nf-tips">Tips</h2>
+        <ul class="tips">
+          <li>Kijk of het woord goed geschreven is.</li>
+          <li>Zoek zonder lidwoord: ‘huis’ en niet ‘het huis’.</li>
+          <li>Probeer een woord dat ongeveer hetzelfde betekent.</li>
+        </ul>
+      </section>
+      <p class="elsewhere">Staat het gebaar er niet bij? Kijk dan in het <a href="https://ow.gebarencentrum.nl/">Gebarenwoordenboek van het Nederlands Gebarencentrum<svg class="i" style="display:inline;width:1em;height:1em;vertical-align:-0.1em;margin-left:0.15em" aria-hidden="true"><use href="#i-external"/></svg></a>. Voor sommige gebaren heb je daar een abonnement nodig.</p>
+    </div>
+  </section>
+
+  <!-- Lists -->
+  <div class="wrap">
+    <div class="lists">
+      <section id="recent" aria-labelledby="recent-h">
+        <h2 id="recent-h"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Laatst gezocht</h2>
+        <ul class="chips" data-recent>
+          <li><a class="chip" href="#gebaar">dank je</a></li><li><a class="chip" href="#gebaar">koffie</a></li>
+          <li><a class="chip" href="#gebaar">school</a></li><li><a class="chip" href="#gebaar">café</a></li>
+          <li><a class="chip" href="#gebaar">trein</a></li>
+        </ul>
+        <button class="linkbtn" type="button" data-action="clear-recent">Wis deze lijst</button>
+      </section>
+      <section id="bewaard" aria-labelledby="fav-h">
+        <h2 id="fav-h"><svg class="i" aria-hidden="true"><use href="#i-star"/></svg>Bewaard</h2>
+        <ul class="chips">
+          <li><a class="chip" href="#gebaar">hallo</a></li><li><a class="chip" href="#gebaar">mama</a></li><li><a class="chip" href="#gebaar">slapen</a></li>
+        </ul>
+      </section>
+    </div>
+
+    <section class="keys" id="sneltoetsen" aria-labelledby="keys-h">
+      <div class="keys__head">
+        <h2 id="keys-h"><svg class="i" aria-hidden="true"><use href="#i-keyboard"/></svg>Sneltoetsen</h2>
+        <label class="keys-toggle"><input type="checkbox" id="keys-on" checked>Sneltoetsen aan</label>
+      </div>
+      <dl>
+        <div><dt><kbd>Spatie</kbd></dt><dd>Pauze of afspelen</dd></div>
+        <div><dt><kbd>R</kbd></dt><dd>Opnieuw afspelen</dd></div>
+        <div><dt><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></dt><dd>Normaal, langzaam, heel langzaam</dd></div>
+        <div><dt><kbd>S</kbd></dt><dd>Spiegel aan of uit</dd></div>
+        <div><dt><kbd>F</kbd></dt><dd>Volledig scherm</dd></div>
+        <div><dt><kbd>/</kbd></dt><dd>Naar het zoekveld</dd></div>
+      </dl>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Gebaren is gratis. Je zoekgeschiedenis blijft op dit apparaat.</p>
+    <nav aria-label="Over deze site"><a href="#gebaar">Over Gebaren</a><a href="#gebaar">Bronnen</a><a href="#gebaar">Toegankelijkheid</a></nav>
+  </div>
+</footer>
+
+<p id="status" class="sr-only" role="status" aria-live="polite"></p>
+<script src="shared/mock.js"></script>
+</body>
+</html>

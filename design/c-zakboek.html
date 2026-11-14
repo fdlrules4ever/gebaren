@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="nl" data-state="gebaar">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gebaren · Richting C: Zakboek</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;display=swap">
+<link rel="stylesheet" href="shared/base.css">
+<style>
+/* Richting C, Zakboek: a friendly pocket app. Round buttons with the label under the icon, a tab bar at the
+   bottom of the phone, a side rail with your lists on a big screen. Andika is made for people who are learning to read. */
+:root {
+  --bg: #F1F4EF; --surface: #FFFFFF; --text: #142019; --muted: #3B4A41; --line: #D3DDD5; --border: #6F7F74;
+  --accent: #1E5B39; --on-accent: #FFFFFF; --soft: #DDE9DF; --stage: #E2EAE3; --focus: #6D28D9; --video-filter: none;
+  --font: "Andika", "Atkinson Hyperlegible", Verdana, system-ui, sans-serif;
+  --gutter: max(1rem, env(safe-area-inset-left, 0px));
+  --gutter-r: max(1rem, env(safe-area-inset-right, 0px));
+  --tabbar: 4.75rem;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E1410; --surface: #172019; --text: #EDF5EF; --muted: #B9C8BE; --line: #26332B; --border: #7E9184;
+    --accent: #8FD7A6; --on-accent: #0B2415; --soft: #20302A; --stage: #1B251F; --focus: #C4A7FF; --video-filter: brightness(0.88);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E1410; --surface: #172019; --text: #EDF5EF; --muted: #B9C8BE; --line: #26332B; --border: #7E9184;
+  --accent: #8FD7A6; --on-accent: #0B2415; --soft: #20302A; --stage: #1B251F; --focus: #C4A7FF; --video-filter: brightness(0.88);
+  color-scheme: dark;
+}
+
+html { scroll-padding-bottom: calc(var(--tabbar) + 1rem); }
+body { background: var(--bg); color: var(--text); font: 400 1.25rem/1.6 var(--font); }
+a { color: var(--text); text-underline-offset: 0.18em; }
+h2 { font-size: 1.375rem; line-height: 1.3; }
+main:focus, h1:focus { outline: none; }
+
+/* ---------- App frame ---------- */
+.app { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "main" "side"; min-height: 100vh; }
+.head { grid-area: head; padding: 0.75rem var(--gutter-r) 1rem var(--gutter); background: var(--surface); border-bottom: 1px solid var(--line); }
+main { grid-area: main; display: block; padding: 1rem var(--gutter-r) 2rem var(--gutter); min-width: 0; }
+.side { grid-area: side; display: grid; gap: 2rem; padding: 1.5rem var(--gutter-r) calc(var(--tabbar) + 2rem) var(--gutter); align-content: start; }
+
+.brand { display: inline-flex; align-items: center; gap: 0.6rem; min-height: 2.75rem; font-weight: 700; font-size: 1.375rem; text-decoration: none; }
+.brand__mark { display: grid; place-items: center; width: 2.4rem; height: 2.4rem; border-radius: 0.8rem; background: var(--accent); color: var(--on-accent); }
+.brand__mark .i { width: 1.5rem; height: 1.5rem; stroke-width: 1.8; }
+
+/* Search */
+.search { margin-top: 0.5rem; }
+.search__label { display: block; font-weight: 700; font-size: 1.0625rem; margin-bottom: 0.35rem; }
+.search__row { display: flex; gap: 0.5rem; }
+.combo { position: relative; flex: 1; min-width: 0; }
+.combo .i { position: absolute; left: 1.05rem; top: 50%; translate: 0 -50%; width: 1.45rem; height: 1.45rem; color: var(--muted); pointer-events: none; }
+.combo input { width: 100%; min-height: 3.5rem; padding: 0.4rem 1rem 0.4rem 3.1rem; font-size: 1.3125rem; background: var(--bg);
+  color: var(--text); border: 2px solid var(--border); border-radius: 999px; }
+.combo input[aria-invalid="true"] { border-width: 3px; border-color: var(--focus); }
+.pill-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 3.5rem; padding: 0.4rem 1.35rem;
+  border: 0; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-weight: 700; font-size: 1.1875rem; }
+.search__hint { margin-top: 0.35rem; font-size: 1rem; color: var(--muted); }
+.search__error { display: flex; gap: 0.5rem; align-items: center; margin-top: 0.4rem; font-weight: 700; font-size: 1.0625rem; }
+.search__error .i { color: var(--focus); }
+#suggest { margin-top: 0.5rem; padding: 0.4rem; background: var(--surface); border: 2px solid var(--border); border-radius: 1.4rem; max-height: 21rem; overflow: auto; }
+#suggest [role="option"] { display: flex; align-items: center; min-height: 3rem; padding: 0.3rem 1rem; border-radius: 999px; font-size: 1.3125rem; }
+#suggest [role="option"]:hover { background: var(--soft); }
+#suggest [aria-selected="true"] { background: var(--accent); color: var(--on-accent); }
+
+/* ---------- Gebaar ---------- */
+.entry { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.word { font-size: clamp(2.6rem, 1.8rem + 3.6vw, 4.25rem); font-weight: 700; line-height: 1.05; overflow-wrap: anywhere; }
+.count { font-size: 1.0625rem; color: var(--muted); }
+.round { display: grid; justify-items: center; gap: 0.3rem; min-width: 4.5rem; padding: 0.25rem; border: 0; background: none;
+  color: var(--text); font-size: 1rem; font-weight: 700; line-height: 1.2; text-align: center; }
+.round__icon { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; background: var(--soft); }
+.round__icon .i { width: 1.6rem; height: 1.6rem; }
+.round:hover .round__icon { box-shadow: inset 0 0 0 2px var(--border); }
+.round--main .round__icon { background: var(--accent); color: var(--on-accent); width: 4.25rem; height: 4.25rem; }
+.round--main .round__icon .i { width: 1.9rem; height: 1.9rem; }
+.round[aria-pressed="true"] .round__icon { background: var(--accent); color: var(--on-accent); }
+.round .i-on { width: 1.6rem; height: 1.6rem; }
+.round[aria-pressed="true"] .round__icon > .i-off { display: none; }
+.round[aria-pressed="true"] .round__icon > .i-on { display: block; }
+.fav[aria-pressed="true"] .i-star { fill: currentColor; }
+
+.pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-block: 0.75rem 1rem; }
+.pills [role="tab"] { min-height: 3rem; padding: 0.3rem 1.2rem; border-radius: 999px; border: 2px solid var(--border);
+  background: var(--surface); font-weight: 700; font-size: 1.125rem; display: inline-flex; align-items: center; gap: 0.4rem; }
+.pills [role="tab"][aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.pills [role="tab"] .i { width: 1.15rem; height: 1.15rem; display: none; }
+.pills [role="tab"][aria-selected="true"] .i { display: block; }
+
+.card { background: var(--surface); border-radius: 1.75rem; padding: 0.75rem; border: 1px solid var(--line); }
+.stage { --vmax: clamp(14rem, calc(100svh - 24rem), 74vh); background: var(--stage); border-radius: 1.25rem; overflow: hidden; }
+.stage video { width: min(100%, calc(var(--vmax) * 16 / 9)); aspect-ratio: 16 / 9; height: auto; margin-inline: auto; object-fit: contain;
+  background: var(--stage); transition: aspect-ratio 0.2s ease; }
+.stage.is-zoomed video { aspect-ratio: 4 / 3; width: min(100%, calc(var(--vmax) * 4 / 3)); object-fit: cover; }
+.actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem 0.75rem; margin-top: 0.9rem; }
+.speed { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.5rem 0.75rem; margin-top: 0.9rem; }
+.speed__label { font-weight: 700; font-size: 1.0625rem; }
+.speed__pill { display: inline-flex; padding: 0.25rem; background: var(--soft); border-radius: 999px; }
+.seg { display: inline-flex; align-items: center; gap: 0.3rem; min-height: 2.9rem; padding: 0.25rem 1rem; border: 0; border-radius: 999px;
+  background: transparent; font-weight: 700; font-size: 1.0625rem; }
+.seg[aria-pressed="true"] { background: var(--surface); box-shadow: 0 0 0 2px var(--accent); }
+.seg .i { width: 1.1rem; height: 1.1rem; }
+
+.about { display: grid; gap: 0.6rem; margin-top: 1.25rem; padding-inline: 0.25rem; max-width: 48rem; }
+.meaning { font-size: 1.375rem; }
+.note { display: flex; gap: 0.6rem; font-size: 1.0625rem; color: var(--muted); }
+.note .i { margin-top: 0.2rem; }
+.credit { font-size: 1rem; color: var(--muted); }
+.ext { display: inline; width: 1em; height: 1em; vertical-align: -0.12em; margin-left: 0.15em; }
+
+/* ---------- Niet gevonden ---------- */
+.nf { display: grid; gap: 1.5rem; max-width: 48rem; }
+.nf__top { display: grid; justify-items: start; gap: 0.75rem; padding: 1.5rem; background: var(--surface); border-radius: 1.75rem; border: 1px solid var(--line); }
+.nf__icon { display: grid; place-items: center; width: 4rem; height: 4rem; border-radius: 1.2rem; background: var(--soft); }
+.nf__icon .i { width: 2.1rem; height: 2.1rem; }
+.nf h1 { font-size: clamp(1.9rem, 1.4rem + 2vw, 2.75rem); line-height: 1.12; }
+.nf section { display: grid; gap: 0.7rem; }
+ul.tips { display: grid; gap: 0.45rem; padding-left: 1.2em; list-style: disc; }
+.elsewhere { padding: 1rem 1.25rem; background: var(--soft); border-radius: 1.25rem; }
+
+/* ---------- Start ---------- */
+.intro { display: grid; gap: 0.9rem; max-width: 44rem; }
+.intro h1 { font-size: clamp(2.1rem, 1.5rem + 2.6vw, 3.25rem); line-height: 1.1; }
+.intro p { font-size: 1.3125rem; }
+.howto { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); gap: 0.75rem; margin-top: 0.5rem; }
+.howto li { display: grid; gap: 0.5rem; padding: 1rem; background: var(--surface); border: 1px solid var(--line); border-radius: 1.25rem; font-size: 1.125rem; }
+.howto .i { width: 1.8rem; height: 1.8rem; color: var(--accent); }
+
+/* ---------- Lists, chips, help ---------- */
+.side section { display: grid; gap: 0.75rem; align-content: start; }
+.side h2 { display: flex; align-items: center; gap: 0.6rem; }
+.chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.chip { display: inline-flex; align-items: center; min-height: 3rem; padding: 0.3rem 1.15rem; border-radius: 999px; background: var(--soft);
+  color: var(--text); font-weight: 700; font-size: 1.1875rem; text-decoration: none; }
+.chip:hover { box-shadow: inset 0 0 0 2px var(--border); }
+.linkbtn { justify-self: start; min-height: 2.75rem; padding: 0; border: 0; background: none; text-decoration: underline;
+  text-underline-offset: 0.18em; font-size: 1.0625rem; }
+.keys dl { display: grid; gap: 0.5rem; }
+.keys dl div { display: flex; align-items: center; gap: 0.9rem; }
+.keys dt { flex: none; min-width: 5.5rem; }
+kbd { display: inline-block; min-width: 2rem; padding: 0.05rem 0.5rem; text-align: center; font: 700 1rem/1.6 var(--font); background: var(--surface);
+  border: 2px solid var(--border); border-bottom-width: 4px; border-radius: 0.6rem; }
+.side footer { font-size: 1rem; color: var(--muted); display: grid; gap: 0.5rem; }
+.side footer nav { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
+
+/* Bottom tab bar (phones) */
+.tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  padding: 0.35rem max(0.5rem, env(safe-area-inset-right, 0px)) calc(0.35rem + env(safe-area-inset-bottom, 0px)) max(0.5rem, env(safe-area-inset-left, 0px));
+  background: var(--surface); border-top: 1px solid var(--line); box-shadow: 0 -4px 16px rgb(0 0 0 / 0.06); }
+.tabbar button { display: grid; justify-items: center; gap: 0.15rem; min-height: 3.75rem; padding: 0.3rem 0.2rem; border: 0; border-radius: 1rem;
+  background: none; font-size: 0.9375rem; font-weight: 700; line-height: 1.15; }
+.tabbar button:hover { background: var(--soft); }
+.tabbar .i { width: 1.6rem; height: 1.6rem; }
+:root { --mock-offset: var(--tabbar); }
+
+/* ---------- Big screens: side rail ---------- */
+@media (min-width: 60rem) {
+  .app { grid-template-columns: 23rem minmax(0, 1fr); grid-template-areas: "head main" "side main"; grid-template-rows: auto 1fr; }
+  .head, .side { background: var(--surface); border-right: 1px solid var(--line); }
+  .head { border-bottom: 0; padding: 1.25rem 1.5rem 0.5rem; }
+  .side { padding: 1rem 1.5rem 2rem; }
+  main { padding: 1.75rem clamp(1.5rem, 3vw, 3rem) 3rem; }
+  .tabbar { display: none; }
+  :root { --mock-offset: 0px; }
+  html { scroll-padding-bottom: 0; }
+  .chip { background: var(--bg); }
+  .main-inner { max-width: 72rem; margin-inline: auto; }
+}
+
+/* ---------- Phones: video card edge to edge, bigger signer ---------- */
+@media (max-width: 40rem) {
+  .card { margin-inline: calc(-1 * var(--gutter) + 0.5rem) calc(-1 * var(--gutter-r) + 0.5rem); padding: 0.5rem; border-radius: 1.5rem; }
+  .stage { border-radius: 1.1rem; }
+  .actions { gap: 0.25rem; justify-content: space-between; }
+  .round { min-width: 0; flex: 1; font-size: 0.9375rem; }
+  .round__icon { width: 3.25rem; height: 3.25rem; }
+  .round--main .round__icon { width: 3.75rem; height: 3.75rem; }
+  .speed__label { width: 100%; text-align: center; }
+  .seg { padding-inline: 0.75rem; font-size: 1rem; }
+  [data-state="gebaar"] .search__hint { display: none; }
+}
+
+/* Short screens (phone on its side, 400% zoom): no fixed bar, video beside the buttons */
+@media (max-height: 32rem) {
+  .tabbar { position: static; }
+  :root { --mock-offset: 0px; }
+  html { scroll-padding-bottom: 0; }
+  .side { padding-bottom: 2rem; }
+}
+@media (orientation: landscape) and (max-height: 32rem) {
+  .card { display: grid; grid-template-columns: auto minmax(12rem, 1fr); gap: 0.75rem; align-items: start; }
+  .stage video { --vmax: calc(100svh - 2.5rem); width: calc(var(--vmax) * 16 / 9); max-width: 100%; }
+  .actions, .speed { margin-top: 0; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#inhoud">Naar de inhoud</a>
+
+<div class="app">
+  <header class="head">
+    <a class="brand" href="#start"><span class="brand__mark"><svg class="i" aria-hidden="true"><use href="#i-hands"/></svg></span>Gebaren</a>
+    <form class="search" role="search" data-search novalidate>
+      <label class="search__label" for="q">Zoek een woord</label>
+      <div class="search__row">
+        <div class="combo">
+          <svg class="i" aria-hidden="true"><use href="#i-search"/></svg>
+          <input id="q" name="q" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false"
+            aria-controls="suggest" aria-describedby="q-hint" autocomplete="off" autocapitalize="none" spellcheck="false" enterkeyhint="search">
+        </div>
+        <button class="pill-btn" type="submit">Zoek</button>
+      </div>
+      <ul id="suggest" role="listbox" aria-label="Woorden" hidden></ul>
+      <p class="search__error" data-search-error hidden><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Typ eerst een woord.</p>
+      <p class="search__hint" id="q-hint" data-combo-hint>Bijvoorbeeld: huis of dank je.</p>
+    </form>
+  </header>
+
+  <main id="inhoud" tabindex="-1">
+    <div class="main-inner">
+
+    <!-- Start -->
+    <section data-view="start" data-query="hu" aria-labelledby="start-title">
+      <div class="intro">
+        <h1 id="start-title">Welk gebaar zoek je?</h1>
+        <p>Typ een woord. Dan zie je het gebaar in Nederlandse Gebarentaal (NGT).</p>
+        <ul class="howto" aria-label="Wat je kunt doen">
+          <li><svg class="i" aria-hidden="true"><use href="#i-replay"/></svg>De video speelt steeds opnieuw.</li>
+          <li><svg class="i" aria-hidden="true"><use href="#i-mirror"/></svg>Met Spiegel kun je het gebaar makkelijk nadoen.</li>
+          <li><svg class="i" aria-hidden="true"><use href="#i-star"/></svg>Bewaar woorden die je vaak nodig hebt.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Gebaar -->
+    <section data-view="gebaar" data-query="huis" data-status="Gebaar gevonden voor huis. Er zijn 2 gebaren." aria-labelledby="word">
+      <div class="entry">
+        <div>
+          <h1 id="word" class="word">huis</h1>
+          <p class="count" data-variant-label>Gebaar 1 van 2</p>
+        </div>
+        <button class="round fav" type="button" data-action="fav" aria-pressed="false">
+          <span class="round__icon"><svg class="i i-star" aria-hidden="true"><use href="#i-star"/></svg></span>Bewaar
+        </button>
+      </div>
+
+      <div class="pills" role="tablist" aria-label="Gebaren voor huis">
+        <button type="button" role="tab" id="tab-1" aria-selected="true" aria-controls="player"
+          data-src="media/huis-a.mp4" data-poster="media/huis-a.png" data-gloss="1954" data-meaning="huis, huisje, hok, schuur">
+          <svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Gebaar 1</button>
+        <button type="button" role="tab" id="tab-2" aria-selected="false" tabindex="-1" aria-controls="player"
+          data-src="media/huis-b.mp4" data-poster="media/huis-b.png" data-gloss="1300" data-meaning="huis, dak">
+          <svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Gebaar 2</button>
+      </div>
+
+      <div class="card" id="player" role="tabpanel" aria-labelledby="tab-1" data-fs>
+        <div class="stage" data-stage>
+          <video src="media/huis-a.mp4" poster="media/huis-a.png" muted loop playsinline preload="auto"
+            aria-label="Video van het gebaar voor huis. De video heeft geen geluid." aria-describedby="meaning"></video>
+        </div>
+        <div class="actions" role="group" aria-label="Video bedienen">
+          <button class="round round--main" type="button" data-action="toggle">
+            <span class="round__icon"><svg class="i" aria-hidden="true"><use href="#i-pause"/></svg></span><span data-label>Pauze</span>
+          </button>
+          <button class="round" type="button" data-action="replay">
+            <span class="round__icon"><svg class="i" aria-hidden="true"><use href="#i-replay"/></svg></span>Opnieuw
+          </button>
+          <button class="round" type="button" data-action="mirror" aria-pressed="false">
+            <span class="round__icon"><svg class="i i-off" aria-hidden="true"><use href="#i-mirror"/></svg><svg class="i i-on" aria-hidden="true"><use href="#i-check"/></svg></span>Spiegel
+          </button>
+          <button class="round" type="button" data-action="zoom" aria-pressed="false">
+            <span class="round__icon"><svg class="i i-off" aria-hidden="true"><use href="#i-zoom"/></svg><svg class="i i-on" aria-hidden="true"><use href="#i-check"/></svg></span>Inzoomen
+          </button>
+          <button class="round" type="button" data-action="fullscreen">
+            <span class="round__icon"><svg class="i" aria-hidden="true"><use href="#i-fullscreen"/></svg></span>Groot
+          </button>
+        </div>
+        <div class="speed" role="group" aria-labelledby="speed-label">
+          <span class="speed__label" id="speed-label">Snelheid</span>
+          <span class="speed__pill">
+            <button class="seg" type="button" data-speed="1" aria-pressed="true"><svg class="i i-on" aria-hidden="true"><use href="#i-check"/></svg>Normaal</button>
+            <button class="seg" type="button" data-speed="0.75" aria-pressed="false"><svg class="i i-on" aria-hidden="true"><use href="#i-check"/></svg>Langzaam</button>
+            <button class="seg" type="button" data-speed="0.5" aria-pressed="false"><svg class="i i-on" aria-hidden="true"><use href="#i-check"/></svg>Heel langzaam</button>
+          </span>
+        </div>
+      </div>
+
+      <div class="about">
+        <p class="meaning" id="meaning"><strong>Betekent:</strong> <span data-meaning>huis, huisje, hok, schuur</span></p>
+        <p class="note"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><span><strong>Inzoomen</strong> haalt de lege ruimte naast de gebaarder weg. <strong>Spiegel</strong> laat het gebaar zien zoals in een spiegel.</span></p>
+        <p class="credit">Video: <a data-source href="https://signbank.cls.ru.nl/dictionary/gloss/1954">NGT Signbank<svg class="i ext" aria-hidden="true"><use href="#i-external"/></svg></a>,
+          Radboud Universiteit en Universiteit van Amsterdam. Licentie <a href="https://creativecommons.org/licenses/by/4.0/deed.nl">CC BY 4.0</a>.</p>
+      </div>
+    </section>
+
+    <!-- Niet gevonden -->
+    <section data-view="niet-gevonden" data-query="huisdier" data-status="Geen gebaar gevonden voor huisdier. Er zijn suggesties." aria-labelledby="nf-title">
+      <div class="nf">
+        <div class="nf__top">
+          <span class="nf__icon"><svg class="i" aria-hidden="true"><use href="#i-notfound"/></svg></span>
+          <h1 id="nf-title">We vinden geen gebaar voor ‘<span data-echo>huisdier</span>’</h1>
+          <p>Dit woord staat niet in onze lijst. Probeer een van deze woorden.</p>
+        </div>
+        <section aria-labelledby="nf-mean">
+          <h2 id="nf-mean">Bedoel je dit woord?</h2>
+          <ul class="chips"><li><a class="chip" href="#gebaar">huisdeur</a></li></ul>
+        </section>
+        <section aria-labelledby="nf-parts">
+          <h2 id="nf-parts">Zoek de delen van het woord</h2>
+          <ul class="chips"><li><a class="chip" href="#gebaar">huis</a></li><li><a class="chip" href="#gebaar">dier</a></li></ul>
+        </section>
+        <section aria-labelledby="nf-tips">
+          <h2 id="nf-tips">Tips</h2>
+          <ul class="tips">
+            <li>Kijk of het woord goed geschreven is.</li>
+            <li>Zoek zonder lidwoord: ‘huis’ en niet ‘het huis’.</li>
+            <li>Probeer een woord dat ongeveer hetzelfde betekent.</li>
+          </ul>
+        </section>
+        <p class="elsewhere">Staat het gebaar er niet bij? Kijk dan in het <a href="https://ow.gebarencentrum.nl/">Gebarenwoordenboek van het Nederlands Gebarencentrum<svg class="i ext" aria-hidden="true"><use href="#i-external"/></svg></a>. Voor sommige gebaren heb je daar een abonnement nodig.</p>
+      </div>
+    </section>
+
+    </div>
+  </main>
+
+  <aside class="side" aria-label="Jouw woorden en uitleg">
+    <section id="recent" aria-labelledby="recent-h">
+      <h2 id="recent-h"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Laatst gezocht</h2>
+      <ul class="chips" data-recent>
+        <li><a class="chip" href="#gebaar">dank je</a></li><li><a class="chip" href="#gebaar">koffie</a></li>
+        <li><a class="chip" href="#gebaar">school</a></li><li><a class="chip" href="#gebaar">café</a></li>
+        <li><a class="chip" href="#gebaar">trein</a></li>
+      </ul>
+      <button class="linkbtn" type="button" data-action="clear-recent">Wis deze lijst</button>
+    </section>
+    <section id="bewaard" aria-labelledby="fav-h">
+      <h2 id="fav-h"><svg class="i" aria-hidden="true"><use href="#i-star"/></svg>Bewaard</h2>
+      <ul class="chips">
+        <li><a class="chip" href="#gebaar">hallo</a></li><li><a class="chip" href="#gebaar">mama</a></li><li><a class="chip" href="#gebaar">slapen</a></li>
+      </ul>
+    </section>
+    <section class="keys" id="uitleg" aria-labelledby="keys-h">
+      <h2 id="keys-h"><svg class="i" aria-hidden="true"><use href="#i-keyboard"/></svg>Sneltoetsen</h2>
+      <label class="keys-toggle"><input type="checkbox" id="keys-on" checked>Sneltoetsen aan</label>
+      <dl>
+        <div><dt><kbd>Spatie</kbd></dt><dd>Pauze of afspelen</dd></div>
+        <div><dt><kbd>R</kbd></dt><dd>Opnieuw</dd></div>
+        <div><dt><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></dt><dd>Snelheid</dd></div>
+        <div><dt><kbd>S</kbd></dt><dd>Spiegel</dd></div>
+        <div><dt><kbd>Z</kbd></dt><dd>Inzoomen</dd></div>
+        <div><dt><kbd>F</kbd></dt><dd>Groot scherm</dd></div>
+        <div><dt><kbd>/</kbd></dt><dd>Zoeken</dd></div>
+      </dl>
+    </section>
+    <footer>
+      <p>Gebaren is gratis. Wat je zoekt, blijft op dit apparaat.</p>
+      <nav aria-label="Over deze site"><a href="#gebaar">Over Gebaren</a><a href="#gebaar">Bronnen</a><a href="#gebaar">Toegankelijkheid</a></nav>
+    </footer>
+  </aside>
+</div>
+
+<nav class="tabbar" aria-label="Snel naar">
+  <button type="button" data-scroll-to="q"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg>Zoeken</button>
+  <button type="button" data-scroll-to="recent"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Recent</button>
+  <button type="button" data-scroll-to="bewaard"><svg class="i" aria-hidden="true"><use href="#i-star"/></svg>Bewaard</button>
+  <button type="button" data-scroll-to="uitleg"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Uitleg</button>
+</nav>
+
+<p id="status" class="sr-only" role="status" aria-live="polite"></p>
+<script src="shared/mock.js"></script>
+<script>
+  /* Proposal in this direction: on a phone held upright, start zoomed in on the signer (4:3 instead of 16:9). */
+  (function () {
+    if (!window.matchMedia('(max-width: 40rem) and (orientation: portrait)').matches) return;
+    var stage = document.querySelector('[data-stage]');
+    var btn = document.querySelector('[data-action="zoom"]');
+    if (stage && btn) { stage.classList.add('is-zoomed'); btn.setAttribute('aria-pressed', 'true'); }
+  })();
+</script>
+</body>
+</html>

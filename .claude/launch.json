@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "mockups",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["design/serve.mjs", "4173"],
+      "port": 4173
+    },
+    {
+      "name": "gebaren",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["exec", "wrangler", "dev", "--port", "8787", "--ip", "127.0.0.1"],
+      "port": 8787
+    }
+  ]
+}

@@ -1,0 +1,258 @@
+<title>Gebaren designrichtingen</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Space+Grotesk:wght@500;700&amp;display=swap">
+<style>
+/* Layout: a review sheet. One section per direction; each shows the same screen at desktop and phone size, light row over dark row. */
+:root {
+  --bg: #F4F5F2; --panel: #FFFFFF; --fg: #17191C; --muted: #4A4F57; --line: #DADDD8; --accent: #2F5D50; --chip: #E9ECE6;
+  --a: #0B4F8A; --b: #E0B21E; --c: #1E5B39;
+  --font: "Inter", system-ui, sans-serif; --display: "Space Grotesk", "Inter", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121412; --panel: #1B1E1B; --fg: #ECEEEA; --muted: #B4B9B2; --line: #2E322E; --accent: #9FD3BE; --chip: #262A26;
+    --a: #93C5FD; --b: #FFD43B; --c: #8FD7A6; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121412; --panel: #1B1E1B; --fg: #ECEEEA; --muted: #B4B9B2; --line: #2E322E; --accent: #9FD3BE; --chip: #262A26;
+  --a: #93C5FD; --b: #FFD43B; --c: #8FD7A6; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 400 1rem/1.6 var(--font);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 2rem 4rem; }
+a { color: var(--accent); text-underline-offset: 0.18em; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.page { max-width: 78rem; margin-inline: auto; display: grid; gap: 2.5rem; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.12; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2rem, 1.4rem + 2.4vw, 3.25rem); letter-spacing: -0.02em; }
+h2 { font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.1rem); }
+h3 { font-size: 1.05rem; }
+p { margin: 0; }
+.lede { font-size: 1.15rem; max-width: 46rem; color: var(--muted); }
+.lede strong { color: var(--fg); }
+.head { display: grid; gap: 0.9rem; }
+.eyebrow { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+/* Screen switch */
+.switch { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem;
+  padding: 0.75rem 0; background: var(--bg); border-bottom: 1px solid var(--line); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.switch__label { font-weight: 700; }
+.switch__group { display: inline-flex; flex-wrap: wrap; gap: 0.35rem; padding: 0.3rem; background: var(--chip); border-radius: 999px; }
+.switch button { min-height: 2.75rem; padding: 0.3rem 1.05rem; border: 0; border-radius: 999px; background: transparent; color: var(--fg);
+  font: 600 0.98rem var(--font); cursor: pointer; }
+.switch button[aria-pressed="true"] { background: var(--panel); box-shadow: 0 0 0 2px var(--accent); }
+
+/* Direction */
+.dir { display: grid; gap: 1.25rem; padding: clamp(1rem, 2.5vw, 2rem); background: var(--panel); border-radius: 1.25rem; border: 1px solid var(--line); }
+.dir__top { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 1.25rem 2.5rem; }
+.dir__title { display: flex; align-items: center; gap: 0.9rem; }
+.badge { display: grid; place-items: center; flex: none; width: 3rem; height: 3rem; border-radius: 0.8rem; font: 700 1.5rem var(--display); color: #fff; }
+.dir--a .badge { background: #0B4F8A; }
+.dir--b .badge { background: #FFD43B; color: #111418; border-radius: 0.2rem; }
+.dir--c .badge { background: #1E5B39; border-radius: 50%; }
+.concept { font-size: 1.1rem; margin-top: 0.6rem; }
+.facts { display: grid; gap: 0.9rem; align-content: start; }
+.facts ul { margin: 0.35rem 0 0; padding-left: 1.15rem; display: grid; gap: 0.3rem; }
+.watch { padding: 0.75rem 0.9rem; background: var(--chip); border-radius: 0.75rem; }
+.meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1.5rem; font-size: 0.95rem; color: var(--muted); }
+.swatches { display: inline-flex; gap: 0.3rem; vertical-align: middle; }
+.sw { width: 1.35rem; height: 1.35rem; border-radius: 0.35rem; border: 1px solid var(--line); }
+.open { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.open a { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0.3rem 1rem; border-radius: 999px; background: var(--chip);
+  color: var(--fg); font-weight: 600; text-decoration: none; }
+.open a:hover { box-shadow: inset 0 0 0 2px var(--accent); }
+
+/* Screenshots: light row over dark row, desktop beside phone */
+.shots { display: grid; grid-template-columns: minmax(0, 3.4fr) minmax(0, 1fr); gap: 0.9rem; }
+.shot { display: grid; gap: 0.35rem; margin: 0; }
+.shot a { display: block; border-radius: 0.6rem; overflow: hidden; border: 1px solid var(--line); background: var(--chip); }
+.shot img { display: block; width: 100%; height: auto; }
+.shot figcaption { font-size: 0.85rem; color: var(--muted); }
+
+/* Comparison and shared */
+.table-wrap { overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 1.25rem; }
+table { width: 100%; min-width: 44rem; border-collapse: collapse; font-size: 0.97rem; }
+th, td { text-align: left; vertical-align: top; padding: 0.85rem 1rem; border-bottom: 1px solid var(--line); }
+thead th { font-family: var(--display); font-size: 1.05rem; }
+tbody th { color: var(--muted); font-weight: 600; width: 9rem; }
+tr:last-child th, tr:last-child td { border-bottom: 0; }
+.shared { display: grid; gap: 1rem; }
+.shared ul { margin: 0; padding-left: 1.15rem; display: grid; gap: 0.45rem; max-width: 60rem; }
+.pick { padding: 1.25rem 1.5rem; border-radius: 1.25rem; background: var(--panel); border: 2px solid var(--accent); display: grid; gap: 0.5rem; }
+.foot { font-size: 0.9rem; color: var(--muted); display: grid; gap: 0.35rem; }
+
+@media (max-width: 52rem) {
+  .dir__top { grid-template-columns: minmax(0, 1fr); }
+  .shots { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .shot--desktop { grid-column: 1 / -1; }
+}
+</style>
+
+<div class="page">
+  <header class="head">
+    <p class="eyebrow">Gebaren v2 · step 2: design</p>
+    <h1>Three design directions</h1>
+    <p class="lede">All three are <strong>working mockups</strong>: the video loops, the buttons work and the search box suggests words (type <strong>hu</strong>, use the arrow keys, press Enter).
+      They share the same content and accessibility features; they differ in layout, type, colour and feel. <strong>Pick one, or a mix</strong>.</p>
+  </header>
+
+  <nav class="switch" aria-label="Screen to compare">
+    <span class="switch__label" id="switch-label">Show screen:</span>
+    <span class="switch__group" role="group" aria-labelledby="switch-label">
+      <button type="button" data-screen="gebaar" aria-pressed="true">Sign (player)</button>
+      <button type="button" data-screen="niet-gevonden" aria-pressed="false">Not found</button>
+      <button type="button" data-screen="start" aria-pressed="false">Start, typing</button>
+    </span>
+  </nav>
+
+  <!-- A -->
+  <section class="dir dir--a" aria-labelledby="dir-a" data-dir="a-stilte" data-k="a">
+    <div class="dir__top">
+      <div>
+        <div class="dir__title"><span class="badge" aria-hidden="true">A</span><h2 id="dir-a">Stilte <span style="font-weight:500;color:var(--muted)">(Quiet)</span></h2></div>
+        <p class="concept">One calm, centred column. The video sits in a soft frame and everything around it stays quiet.</p>
+        <div class="meta" style="margin-top:0.9rem">
+          <span>Type: Atkinson Hyperlegible Next</span>
+          <span>Colour: <span class="swatches"><span class="sw" style="background:#0B4F8A"></span><span class="sw" style="background:#F3F5F7"></span><span class="sw" style="background:#0F1724"></span><span class="sw" style="background:#93C5FD"></span><span class="sw" style="background:#0E1217"></span></span></span>
+        </div>
+      </div>
+      <div class="facts">
+        <div><h3>What makes it different</h3>
+          <ul>
+            <li>The same single column on every screen, so nothing moves around between phone and laptop.</li>
+            <li>Atkinson Hyperlegible Next was designed for readers with low vision.</li>
+            <li>Word, variants and Bewaar share one row on a laptop, so the video gets more height.</li>
+          </ul></div>
+        <p class="watch"><strong>Watch out:</strong> the quietest look, and also the least distinctive. On a 1280×860 laptop the video takes about 60% of the height; bigger screens get more, and full screen is one click.</p>
+      </div>
+    </div>
+    <div class="open" data-open></div>
+    <div class="shots" data-shots></div>
+  </section>
+
+  <!-- B -->
+  <section class="dir dir--b" aria-labelledby="dir-b" data-dir="b-signaal" data-k="b">
+    <div class="dir__top">
+      <div>
+        <div class="dir__title"><span class="badge" aria-hidden="true">B</span><h2 id="dir-b">Signaal <span style="font-weight:500;color:var(--muted)">(Signal)</span></h2></div>
+        <p class="concept">Bold signage. A yellow search band and thick lines, with the word huge on the left and the video big on the right.</p>
+        <div class="meta" style="margin-top:0.9rem">
+          <span>Type: Lexend</span>
+          <span>Colour: <span class="swatches"><span class="sw" style="background:#FFD43B"></span><span class="sw" style="background:#14213D"></span><span class="sw" style="background:#FFFFFF"></span><span class="sw" style="background:#111418"></span><span class="sw" style="background:#0C0F14"></span></span></span>
+        </div>
+      </div>
+      <div class="facts">
+        <div><h3>What makes it different</h3>
+          <ul>
+            <li>Two columns on a big screen. Word, variants and meaning sit on the left, and the video gets the most room of the three.</li>
+            <li>Variants are picture tiles, so you see the difference before you choose.</li>
+            <li>Speed buttons show both the word and the number (Normaal 1×). Lexend is a wide face made for reading fluency.</li>
+          </ul></div>
+        <p class="watch"><strong>Watch out:</strong> the strongest identity, and also the loudest. In the dark theme the yellow stays as an accent only, because a large yellow band would glare.</p>
+      </div>
+    </div>
+    <div class="open" data-open></div>
+    <div class="shots" data-shots></div>
+  </section>
+
+  <!-- C -->
+  <section class="dir dir--c" aria-labelledby="dir-c" data-dir="c-zakboek" data-k="c">
+    <div class="dir__top">
+      <div>
+        <div class="dir__title"><span class="badge" aria-hidden="true">C</span><h2 id="dir-c">Zakboek <span style="font-weight:500;color:var(--muted)">(Pocket)</span></h2></div>
+        <p class="concept">A friendly pocket app. Round buttons with the label under the icon, a tab bar on the phone, and your lists in a side rail on a big screen.</p>
+        <div class="meta" style="margin-top:0.9rem">
+          <span>Type: Andika</span>
+          <span>Colour: <span class="swatches"><span class="sw" style="background:#1E5B39"></span><span class="sw" style="background:#DDE9DF"></span><span class="sw" style="background:#F1F4EF"></span><span class="sw" style="background:#8FD7A6"></span><span class="sw" style="background:#0E1410"></span></span></span>
+        </div>
+      </div>
+      <div class="facts">
+        <div><h3>What makes it different</h3>
+          <ul>
+            <li><strong>Inzoomen</strong> crops the empty studio space beside the signer. On a phone held upright the signer is a third bigger (4:3 instead of 16:9). It starts switched on there.</li>
+            <li>The tab bar keeps Zoeken, Recent, Bewaard and Uitleg one tap away. On a laptop those sit in a side rail.</li>
+            <li>Andika was made for people who are learning to read, which fits readers for whom Dutch is a second language.</li>
+          </ul></div>
+        <p class="watch"><strong>Watch out:</strong> Inzoomen could cut off a sign that uses the full arm span, so it stays a switch. The fixed tab bar is turned off on short screens and at high zoom, so it never hides content.</p>
+      </div>
+    </div>
+    <div class="open" data-open></div>
+    <div class="shots" data-shots></div>
+  </section>
+
+  <section aria-labelledby="cmp-h" style="display:grid;gap:1rem">
+    <h2 id="cmp-h">Side by side</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th scope="col"><span class="sr" style="position:absolute;left:-9999px">Aspect</span></th><th scope="col">A · Stilte</th><th scope="col">B · Signaal</th><th scope="col">C · Zakboek</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Layout</th><td>One centred column</td><td>Word left, video right</td><td>App: rail + main, tab bar on phone</td></tr>
+          <tr><th scope="row">Video frame</th><td>Soft grey frame, rounded</td><td>Navy frame, square</td><td>Rounded card</td></tr>
+          <tr><th scope="row">Controls</th><td>One row of buttons under the video</td><td>Heavy tiles; icon above the label on a phone</td><td>Round buttons, label under the icon</td></tr>
+          <tr><th scope="row">Variants</th><td>Pill tabs: Gebaar 1, Gebaar 2</td><td>Picture tiles with their meanings</td><td>Pill tabs + "Gebaar 1 van 2"</td></tr>
+          <tr><th scope="row">Typeface</th><td>Atkinson Hyperlegible Next</td><td>Lexend</td><td>Andika</td></tr>
+          <tr><th scope="row">Feel</th><td>Calm, neutral</td><td>Bold, signage</td><td>Friendly, app-like</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="shared" aria-labelledby="shared-h">
+    <h2 id="shared-h">The same in all three</h2>
+    <ul>
+      <li>Big controls (44 px or more), each with an icon <em>and</em> a word. On/off states show a check mark, never only a colour.</li>
+      <li>Autoplay, muted and looping, with a big Pauze button. With "reduce motion" on, the video waits for Afspelen.</li>
+      <li>Speed (Normaal, Langzaam, Heel langzaam), Spiegel, Opnieuw and full screen. In full screen our own controls stay visible.</li>
+      <li>Keyboard shortcuts are listed on the page and <strong>can be switched off</strong>. WCAG 2.1.4 requires this for single-key shortcuts.</li>
+      <li>In dark mode the white studio video is dimmed a little (88%) to cut glare.</li>
+      <li>A search box that suggests words as you type and works fully by keyboard, with status messages for screen readers.</li>
+      <li>Not found: a likely word (<em>huisdeur</em>), <strong>the parts of a compound word</strong> (<em>huis</em> + <em>dier</em>, a new idea that suits Dutch), tips, and a link to the Gebarencentrum.</li>
+      <li>No cookies, no ads, no pop-ups. Recent searches and Bewaard stay on the device.</li>
+    </ul>
+  </section>
+
+  <section class="pick" aria-labelledby="pick-h">
+    <h2 id="pick-h">How to choose</h2>
+    <p>Reply with a letter, or describe a mix, for example "B's layout with A's colours" or "A, plus Inzoomen from C". Open a live mockup to try it: the dashed <strong>Mockup</strong> button in its corner switches screens and themes.</p>
+  </section>
+
+  <footer class="foot">
+    <p>Video: HUIS-A and HUIS-B from <a href="https://signbank.cls.ru.nl/datasets/NGT/">NGT Signbank</a> (Radboud Universiteit en Universiteit van Amsterdam), licence <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+    <p>The mockups load fonts from Google Fonts. The real app will host the chosen font itself and make no third-party requests.</p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var SCREENS = ['gebaar', 'niet-gevonden', 'start'];
+  var NAMES = { gebaar: 'sign page', 'niet-gevonden': 'not found', start: 'start, typing' };
+  function current() { var h = location.hash.slice(1); return SCREENS.indexOf(h) >= 0 ? h : 'gebaar'; }
+  function shot(dir, k, screen, theme, size) {
+    var href = dir + '.html#' + screen + '-' + theme;
+    var src = 'shots/' + k + '-' + screen + '-' + theme + '-' + size + '.jpg';
+    var w = size === 'desktop' ? 1280 : 780, h = size === 'desktop' ? 860 : 1688;
+    var label = (size === 'desktop' ? 'Laptop' : 'Phone') + ', ' + (theme === 'licht' ? 'light' : 'dark');
+    return '<figure class="shot shot--' + size + '"><a href="' + href + '"><img src="' + src + '" width="' + w + '" height="' + h +
+      '" loading="lazy" alt="' + label + ' theme, ' + NAMES[screen] + '. Opens the live mockup."></a><figcaption>' + label + '</figcaption></figure>';
+  }
+  function render() {
+    var s = current();
+    document.querySelectorAll('[data-screen]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.screen === s)); });
+    document.querySelectorAll('.dir').forEach(function (sec) {
+      var dir = sec.dataset.dir, k = sec.dataset.k;
+      sec.querySelector('[data-shots]').innerHTML =
+        shot(dir, k, s, 'licht', 'desktop') + shot(dir, k, s, 'licht', 'mobiel') +
+        shot(dir, k, s, 'donker', 'desktop') + shot(dir, k, s, 'donker', 'mobiel');
+      sec.querySelector('[data-open]').innerHTML =
+        '<a href="' + dir + '.html#' + s + '-licht">Open live, light</a><a href="' + dir + '.html#' + s + '-donker">Open live, dark</a>';
+    });
+  }
+  document.querySelectorAll('[data-screen]').forEach(function (b) {
+    b.addEventListener('click', function () { location.hash = b.dataset.screen; });
+  });
+  window.addEventListener('hashchange', render);
+  render();
+})();
+</script>
