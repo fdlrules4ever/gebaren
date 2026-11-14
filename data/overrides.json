@@ -1,0 +1,27 @@
+{
+  "$comment": "Own overrides. They are shown before Signbank results. Keys are words (any spelling; they are normalised). kind 'youtube' needs videoId; kind 'mp4' needs an https url on an allowed host (see src/worker/overrides.ts).",
+  "words": {
+    "schep": [
+      {
+        "kind": "youtube",
+        "videoId": "-mZJCBQkhiY",
+        "meaning": ["schep"],
+        "sourceName": "Het gebaar van de dag (YouTube)",
+        "sourcePageUrl": "https://www.youtube.com/watch?v=-mZJCBQkhiY",
+        "licence": "Standaardlicentie YouTube",
+        "licenceUrl": "https://www.youtube.com/t/terms"
+      }
+    ],
+    "rietje": [
+      {
+        "kind": "youtube",
+        "videoId": "NWwxULW91II",
+        "meaning": ["rietje"],
+        "sourceName": "Het gebaar van de dag (YouTube)",
+        "sourcePageUrl": "https://www.youtube.com/watch?v=NWwxULW91II",
+        "licence": "Standaardlicentie YouTube",
+        "licenceUrl": "https://www.youtube.com/t/terms"
+      }
+    ]
+  }
+}

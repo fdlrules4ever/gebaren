@@ -1,0 +1,22 @@
+{
+  // Node scripts and tests (run with node --experimental-strip-types) and the Playwright config.
+  "compilerOptions": {
+    "target": "ES2023",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2023", "DOM"],
+    "types": ["node"],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true
+  },
+  "include": ["scripts/**/*.ts", "tests/unit/**/*.ts", "tests/runtime/*.test.ts", "tests/e2e/**/*.ts", "playwright.config.ts", "src/shared/**/*.ts", "src/worker/lookup.ts", "src/worker/range.ts", "src/worker/validate.ts"]
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "gebaren",
+  "account_id": "804cdc04f0082fe136cb130e0114fe3a",
+  "main": "src/worker/index.ts",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": true,
+  // Workflow: test locally, push to main, Workers Builds deploys. No preview versions.
+  "preview_urls": false,
+
+  // The Svelte app (vite build) is served as static assets. Unknown paths such as /huis get index.html (deep links).
+  // Only API and media paths run the Worker first.
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*", "/video/*", "/poster/*"]
+  },
+
+  // Basic rate limiting per IP address and Cloudflare location (approximate by design).
+  "ratelimits": [
+    { "name": "API_LIMIT", "namespace_id": "4801", "simple": { "limit": 60, "period": 60 } },
+    { "name": "MEDIA_LIMIT", "namespace_id": "4802", "simple": { "limit": 300, "period": 60 } }
+  ],
+
+  "vars": {
+    // "on" = look up words that Signbank does not have on the old lerengebaren.nl dictionary (CC BY-SA 4.0).
+    "LERENGEBAREN_FALLBACK": "on"
+  },
+
+  "observability": { "enabled": true }
+}
