@@ -133,6 +133,11 @@ The screen-reader checks (NVDA, TalkBack, VoiceOver) are done by hand. See [docs
 
 Keep it simple: **test locally, then push to `main`.** Cloudflare Workers Builds builds and deploys every push to `main`. There are no preview builds or preview URLs.
 
+The Worker answers on two addresses:
+
+- https://gebaren.franklippes.com is the public address. It is a custom domain set in `wrangler.jsonc` (`routes`), so Cloudflare manages its DNS record.
+- https://gebaren.franklippes.workers.dev stays on for testing.
+
 1. Run every check locally (type checks, unit tests, build, workerd tests, browser tests):
 
    ```bash

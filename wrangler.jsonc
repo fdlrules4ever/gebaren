@@ -8,6 +8,10 @@
   // Workflow: test locally, push to main, Workers Builds deploys. No preview versions.
   "preview_urls": false,
 
+  // The public address. Cloudflare manages the DNS record for a custom domain.
+  // (Until 2026-11-14 this domain belonged to the v1 Worker "franklippes-gebaren".)
+  "routes": [{ "pattern": "gebaren.franklippes.com", "custom_domain": true }],
+
   // The Svelte app (vite build) is served as static assets. Unknown paths such as /huis get index.html (deep links).
   // Only API and media paths run the Worker first.
   "assets": {

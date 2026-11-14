@@ -2,7 +2,7 @@
 
 Automated tests (axe, keyboard, reflow, target sizes) run with `pnpm test:e2e`. The checks below need a person with a real screen reader or phone.
 
-Run them on the live site (https://gebaren.franklippes.workers.dev, later https://gebaren.franklippes.com). For desktop tests you can also use the local app (`pnpm preview`, http://localhost:8787). Then fill in the results table at the bottom.
+Run them on the live site (https://gebaren.franklippes.com). For desktop tests you can also use the local app (`pnpm preview`, http://localhost:8787). Then fill in the results table at the bottom.
 
 Each test takes about 5 minutes.
 
