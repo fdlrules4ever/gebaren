@@ -1,0 +1,105 @@
+/*
+ * Gebaren, direction A "Stilte": one calm centred column; the video sits in a soft frame and everything around it stays quiet.
+ * All text sizes are in rem, so the browser's text size and zoom always apply.
+ */
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("/fonts/atkinson-hyperlegible-next-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("/fonts/atkinson-hyperlegible-next-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+:root {
+  --bg: #F3F5F7; --surface: #FFFFFF; --text: #0F1724; --muted: #3A4556; --line: #D5DCE4;
+  --border: #6B7686; --accent: #0B4F8A; --on-accent: #FFFFFF; --weak: #E3ECF6; --stage: #E4E9EF;
+  --focus: #B43C00; --video-filter: none;
+  --font: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", Verdana, system-ui, sans-serif;
+  --gutter: max(1rem, env(safe-area-inset-left, 0px));
+  --gutter-r: max(1rem, env(safe-area-inset-right, 0px));
+  --radius: 0.875rem;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0E1217; --surface: #161B22; --text: #EEF2F7; --muted: #B7C2D0; --line: #2A323D;
+    --border: #7C8898; --accent: #93C5FD; --on-accent: #08213D; --weak: #1C2B3D; --stage: #1D242D;
+    --focus: #FFB070; --video-filter: brightness(0.88);
+    color-scheme: dark;
+  }
+}
+/* More contrast asked for: no grey text, solid lines. */
+@media (prefers-contrast: more) {
+  :root { --muted: var(--text); --border: var(--text); --line: var(--text); --video-filter: none; }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: 1rem; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 400 1.25rem/1.6 var(--font); }
+img, video, svg, iframe { display: block; max-width: 100%; }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+h1, h2, h3, p, ul, ol, dl, dd { margin: 0; }
+h1, h2, h3 { text-wrap: balance; line-height: 1.2; }
+h2 { font-size: 1.375rem; }
+ul[class], ol[class] { list-style: none; padding: 0; }
+[hidden] { display: none !important; }
+a { color: var(--accent); text-underline-offset: 0.18em; text-decoration-thickness: 0.08em; }
+a:hover { text-decoration-thickness: 0.14em; }
+:focus-visible { outline: 0.1875rem solid var(--focus); outline-offset: 0.1875rem; }
+main:focus, h1:focus { outline: none; }
+
+.sr-only {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.wrap { width: 100%; max-width: 72rem; margin-inline: auto; padding-left: var(--gutter); padding-right: var(--gutter-r); }
+.i { width: 1.25em; height: 1.25em; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.i-on { display: none; }
+[aria-pressed="true"] > .i-on { display: block; }
+[aria-pressed="true"] > .i-off { display: none; }
+
+.skip { position: absolute; left: 1rem; top: -10rem; z-index: 100; padding: 0.75rem 1rem; background: var(--text); color: var(--bg);
+  font-weight: 700; text-decoration: none; border-radius: 0.5rem; }
+.skip:focus { top: 1rem; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem; min-height: 3rem; padding: 0.5rem 1.15rem;
+  border: 2px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--text);
+  font-weight: 700; font-size: 1.125rem; line-height: 1.2; text-decoration: none; }
+.btn:hover { background: var(--weak); }
+.btn--primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn--primary:hover { background: var(--accent); filter: brightness(1.08); }
+.btn[aria-pressed="true"] { background: var(--weak); border-color: var(--accent); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.chip { display: inline-flex; align-items: center; min-height: 3rem; padding: 0.35rem 1.2rem; border-radius: 999px;
+  background: var(--surface); border: 2px solid var(--border); color: var(--text); font-weight: 700; font-size: 1.1875rem; text-decoration: none; }
+.chip:hover { background: var(--weak); }
+
+.linkbtn { min-height: 2.75rem; padding: 0; border: 0; background: none; color: var(--accent);
+  text-decoration: underline; text-underline-offset: 0.18em; font-size: 1.0625rem; }
+
+.note { display: flex; gap: 0.6rem; font-size: 1.0625rem; color: var(--muted); }
+.note .i { margin-top: 0.2rem; }
+.ext { display: inline; width: 1em; height: 1em; vertical-align: -0.12em; margin-left: 0.15em; }
+
+.noscript { padding: 2rem 1rem; font-size: 1.25rem; }
+
+/* Windows high contrast: keep states visible with outlines (check marks stay too). */
+@media (forced-colors: active) {
+  .btn[aria-pressed="true"], [role="tab"][aria-selected="true"], [role="option"][aria-selected="true"] { outline: 3px solid CanvasText; outline-offset: 1px; }
+  .stage { border: 1px solid CanvasText; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}
