@@ -1,0 +1,6 @@
+// Config for the test-only parser harness (no assets, no bindings). Never deployed.
+{
+  "name": "gebaren-test-harness",
+  "main": "harness.ts",
+  "compatibility_date": "2026-11-01"
+}

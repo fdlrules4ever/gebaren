@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html xmlns:fb="http://ogp.me/ns/fb#" lang="nl">
+<head>
+  <title>Lerengebaren.nl - Gebarenwoordenboek</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Op zoek naar een gebaar? Wil je gebarentaal leren? Gebarenspel proberen? Bij Lerengebaren.nl zit je goed!">
+  <meta name="author" content="Gomer Otterspeer">
+  	<meta name="keywords" content="gebarentaal leren, gebarentaal, gebarencursus, gebaren, gebarentaal cursus, doventaal,gebarenspel">
+<meta property="og:image" content="https://www.lerengebaren.nl/gebaren/thumbnail/.m4v.jpg" />
+<meta property="og:title" content="Lerengebaren.nl - Gebaren leren en spelen voor je plezier!" />
+<meta property="og:description" content="Ik heb deze gebaar gedeeld: Niet gevonden!" />
+<meta property="fb:app_id" content="201601533258691" />
+<meta property="og:type" content="website" />
+	<!--link rel="stylesheet/less" href="less/bootstrap.less" type="text/css" /-->
+	<!--link rel="stylesheet/less" href="less/responsive.less" type="text/css" /-->
+	<!--script src="js/less-1.3.3.min.js"></script-->
+	<!--append ‘#!watch’ to the browser URL, then refresh the page. -->
+	
+	<link href="https://www.lerengebaren.nl/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://www.lerengebaren.nl/js/jquery-ui.min.css" rel="stylesheet">
+    <link href="https://www.lerengebaren.nl/css/style.css" rel="stylesheet">
+
+  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+  <![endif]-->
+
+  <!-- Fav and touch icons -->
+
+	<script type="text/javascript" src="https://www.lerengebaren.nl/js/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.lerengebaren.nl/js/jquery-ui.min.js"></script>
+
+    <script type="text/javascript" src="https://www.lerengebaren.nl/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://www.lerengebaren.nl/js/scripts.js"></script>
+
+ 
+	 
+  	<script type="text/javascript"> 
+function make_blank()
+{
+document.form1.q.value ="";
+}
+</script>
+<style>
+.extra-data {
+  width:70%;
+  margin-left:20%;
+}
+
+</style>
+
+		
+</head>
+
+<body>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '201601533258691',
+          xfbml      : true,
+          version    : 'v2.1',
+		  status	:	true
+        });
+      };
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
+<!-- Bar "LerenGebaren krijgt een nieuwe website" (prepared 2026-10-09).
+     Included as the first line of navbar.php, so it is the first thing in the
+     body of every page that has the navigation. Self-contained: own styles and
+     script, no jQuery or Bootstrap needed, plain ASCII (pages differ in charset).
+     - LG_WEB_BAR_LIVE = false: only shown with ?web-app=1 in the address
+       (preview). true = shown to every visitor.
+     - The cross hides it for LG_WEB_BAR_DAYS days (localStorage lgWebBarClosed;
+       0 = for good). To show a changed message to everyone again, change KEY.
+     - It sits above the fixed menu bar and pushes that bar, the left-hand menu
+       and the page down by its own height (measured, so any text fits). When
+       the page is scrolled it slides away; back at the top it returns.
+     - Layers: 1031, just above the menu bar (1030) and below the popup of
+       app-modal.html (2000), which still opens over everything.
+     - Never shown under /app (the web app does not include navbar.php). -->
+<style>
+  .lgwb { display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 1031; margin: 0; background: #fff5d9; border-bottom: 1px solid #efdca4; color: #0f1a1c; font-family: inherit; font-size: 15px; line-height: 1.4; text-align: left; transition: transform .22s ease; }
+  html.lgwb-on .lgwb { display: block; }
+  html.lgwb-on { --lgwb-off: var(--lgwb-h, 0px); }
+  html.lgwb-on.lgwb-away, html.lgwb-on.lgwb-out { --lgwb-off: 0px; }
+  html.lgwb-on body { padding-top: calc(50px + var(--lgwb-h, 0px)); }
+  html.lgwb-on.lgwb-out body { padding-top: 50px; transition: padding-top .22s ease; }
+  html.lgwb-on .navbar-fixed-top { top: var(--lgwb-off, 0px); transition: top .22s ease; }
+  @media (min-width: 768px) {
+    html.lgwb-on .sidebar { top: calc(51px + var(--lgwb-off, 0px)); transition: top .22s ease; }
+  }
+  html.lgwb-away .lgwb, html.lgwb-out .lgwb { transform: translateY(-101%); }
+  /* The opened phone menu never reaches below the screen (a phone on its side). */
+  html.lgwb-on .navbar-fixed-top .navbar-collapse { max-height: min(340px, calc(100vh - var(--lgwb-off, 0px) - 110px)); }
+
+  .lgwb, .lgwb * { box-sizing: border-box; }
+  /* 100vw, not 100%: on a phone a page that is wider than the screen (the
+     homepage is) makes fixed bars as wide as the page; the contents of this
+     bar stay inside the screen, only its colour runs on. */
+  .lgwb-in { position: relative; display: flex; align-items: center; justify-content: center; gap: 12px; width: 100vw; max-width: 100%; min-height: 52px; padding: 8px 60px; }
+  .lgwb-ico { flex: 0 0 auto; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: #ffd66b; }
+  .lgwb-ico svg { display: block; width: 19px; height: 19px; }
+  .lgwb-txt { flex: 0 1 auto; min-width: 0; margin: 0; color: #0f1a1c; }
+  .lgwb-txt strong { font-weight: 700; }
+  .lgwb a.lgwb-go { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 7px; min-height: 36px; margin-left: 4px; padding: 6px 16px; border-radius: 999px; background: #0b7a71; color: #fff; font-size: 15px; font-weight: 700; line-height: 1.2; text-decoration: none; white-space: nowrap; transition: background-color .15s ease; }
+  .lgwb a.lgwb-go:hover, .lgwb a.lgwb-go:focus { background: #085e57; color: #fff; text-decoration: none; }
+  .lgwb a.lgwb-go svg { display: block; width: 16px; height: 16px; }
+  .lgwb-x { position: absolute; top: 50%; right: 10px; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; margin: -20px 0 0; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #0f1a1c; cursor: pointer; transition: background-color .15s ease; }
+  .lgwb-x:hover, .lgwb-x:focus { background: rgba(15, 26, 28, .1); }
+  .lgwb-x svg { display: block; width: 18px; height: 18px; }
+  .lgwb a.lgwb-go:focus, .lgwb-x:focus { outline: 2px solid #0f1a1c; outline-offset: 2px; }
+  .lgwb a.lgwb-go:focus:not(:focus-visible), .lgwb-x:focus:not(:focus-visible) { outline: none; }
+
+  @media (max-width: 640px) {
+    .lgwb { font-size: 14px; }
+    .lgwb-in { display: grid; grid-template-columns: auto 1fr auto; align-items: center; justify-content: stretch; column-gap: 10px; row-gap: 8px; min-height: 0; padding: 8px 6px 10px 12px; }
+    .lgwb-ico { grid-column: 1; grid-row: 1; width: 28px; height: 28px; }
+    .lgwb-ico svg { width: 17px; height: 17px; }
+    .lgwb-txt { grid-column: 2; grid-row: 1; }
+    .lgwb-more { display: none; }
+    .lgwb-x { grid-column: 3; grid-row: 1; position: static; margin: 0; align-self: start; }
+    .lgwb a.lgwb-go { grid-column: 2; grid-row: 2; justify-self: start; margin-left: 0; min-height: 40px; font-size: 14px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lgwb, html.lgwb-on .navbar-fixed-top, html.lgwb-on .sidebar, html.lgwb-on.lgwb-out body, .lgwb a.lgwb-go, .lgwb-x { transition: none; }
+  }
+  @media print { .lgwb { display: none !important; } }
+</style>
+
+<div class="lgwb" id="lgwb" role="region" aria-label="Mededeling over de nieuwe website">
+  <div class="lgwb-in">
+    <span class="lgwb-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#0f1a1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M3.5 11.5 12 4l8.5 7.5"></path><path d="M6 10v9.5h12V10"></path><path d="M10.5 19.5v-5h3v5"></path></svg></span>
+    <p class="lgwb-txt"><strong>LerenGebaren krijgt een nieuwe website.</strong> Binnenkort verhuizen we.<span class="lgwb-more"> Je kunt de nieuwe versie nu al proberen.</span></p>
+    <a class="lgwb-go" id="lgwb-go" href="https://www.lerengebaren.nl/app/">Probeer de nieuwe website<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg></a>
+    <button type="button" class="lgwb-x" id="lgwb-x" aria-label="Melding sluiten"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12"></path><path d="M18 6 6 18"></path></svg></button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var LG_WEB_BAR_LIVE = true;     // false = preview only (?web-app=1)
+  var LG_WEB_BAR_DAYS = 30;       // closed with the cross: back after this many days (0 = never)
+  var KEY = 'lgWebBarClosed';
+
+  var root = document.documentElement;
+  var bar = document.getElementById('lgwb');
+  if (!bar) return;
+  // The bar moves the page with a CSS variable; a browser without them gets no bar.
+  if (!(window.CSS && CSS.supports && CSS.supports('--lgwb-h', '0px'))) return;
+  var preview = /[?&]web-app=1(&|$)/.test(location.search);
+  if (!LG_WEB_BAR_LIVE && !preview) return;
+  if (/^\/app(\/|$)/.test(location.pathname)) return;
+
+  function closedRecently() {
+    try {
+      var t = parseInt(localStorage.getItem(KEY) || '0', 10);
+      if (!(t > 0)) return false;
+      return LG_WEB_BAR_DAYS <= 0 || (Date.now() - t) < LG_WEB_BAR_DAYS * 86400000;
+    } catch (e) { return false; }
+  }
+  function remember() {
+    try { localStorage.setItem(KEY, String(Date.now())); } catch (e) {}
+  }
+  if (!preview && closedRecently()) return;
+
+  var height = 0, away = false, inside = false, gone = false;
+
+  function measure() {
+    if (gone) return;
+    var h = bar.offsetHeight;
+    if (h && h !== height) { height = h; root.style.setProperty('--lgwb-h', h + 'px'); }
+  }
+  // Scrolled down: the bar slides away and the menu bar goes back to the top.
+  // The page keeps its room for the bar, so nothing on the page moves.
+  function place() {
+    if (gone) return;
+    var y = window.pageYOffset || root.scrollTop || 0;
+    var want = !inside && (away ? y > 8 : y > 48);
+    if (want === away) return;
+    away = want;
+    if (away) root.classList.add('lgwb-away'); else root.classList.remove('lgwb-away');
+  }
+  function remove() {
+    gone = true;
+    root.classList.remove('lgwb-on', 'lgwb-away', 'lgwb-out');
+    root.style.removeProperty('--lgwb-h');
+  }
+  function close(e) {
+    if (gone) return;
+    if (!preview) remember();
+    // Closed with the keyboard: focus goes on to the site's name in the menu bar.
+    var byKey = e && e.detail === 0;
+    root.classList.remove('lgwb-away');
+    root.classList.add('lgwb-out');
+    setTimeout(function () {
+      remove();
+      if (byKey) {
+        var next = document.querySelector('.navbar-brand');
+        if (next && next.focus) next.focus();
+      }
+    }, 260);
+  }
+
+  // Runs while the page is still being read in, so the bar is in place at the
+  // first paint and nothing jumps.
+  root.classList.add('lgwb-on');
+  measure();
+  place();
+
+  document.getElementById('lgwb-x').addEventListener('click', close);
+  window.addEventListener('scroll', place, { passive: true });
+  window.addEventListener('resize', measure);
+  window.addEventListener('load', measure);
+  if (window.ResizeObserver) new ResizeObserver(measure).observe(bar);
+  // Reached with the keyboard while it is away: it comes back.
+  bar.addEventListener('focusin', function () { inside = true; place(); });
+  bar.addEventListener('focusout', function () { inside = false; place(); });
+  // Back or forward to a page kept in memory: follow what was closed elsewhere.
+  window.addEventListener('pageshow', function (e) {
+    if (e.persisted && !gone && !preview && closedRecently()) remove();
+  });
+})();
+</script>
+<style>
+
+hr { 
+    margin-left: auto;
+    margin-right: auto;
+    border-style: solid;
+    border-width: 1px;
+} 
+
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-top: 50px;
+}
+
+
+/*
+ * Global add-ons
+ */
+
+.sub-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+.navbar-fixed-top {
+  border: 0;
+}
+
+/*
+ * Sidebar
+ */
+
+/* Hide for mobile, show later */
+.sidebar {
+  display: none;
+}
+@media (min-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 51px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    background-color: #f5f5f5;
+    border-right: 1px solid #eee;
+  }
+}
+
+/* Sidebar navigation */
+.nav-sidebar {
+  margin-right: -21px; /* 20px padding + 1px border */
+  margin-bottom: 20px;
+  margin-left: -20px;
+}
+.nav-sidebar > li > a {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+  color: #fff;
+  background-color: #428bca;
+}
+
+
+/*
+ * Main content
+ */
+
+.main {
+  padding: 20px;
+}
+
+.main .page-header {
+  margin-top: 0;
+}
+
+
+/*
+ * Placeholder dashboard ideas
+ */
+
+.placeholders {
+  margin-bottom: 30px;
+  text-align: center;
+}
+.placeholders h4 {
+  margin-bottom: 0;
+}
+.placeholder {
+  margin-bottom: 20px;
+}
+.placeholder img {
+  display: inline-block;
+  border-radius: 50%;
+}
+
+.lg-logo { 
+ font-family: 'Questrial', serif;
+        font-size: 20px;
+		}
+.btn-subscribe{
+    display: -webkit-inline-box !important;
+}
+.btn-subscribe:hover, .btn-subscribe:focus, .btn-subscribe:active, .btn-subscribe.active{
+    background-color: #76b576 !important;
+}
+
+</style>
+<link href='https://fonts.googleapis.com/css?family=Questrial' rel='stylesheet' type='text/css'>
+     <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar" align="center">
+		          <ul class="nav nav-sidebar">
+		<li><a href="http://www.gebarenschool.nl" target="_blank" >Gebarenschool.nl</a></li>				  
+		<li><a href="https://apps.apple.com/us/app/leren-gebaren/id1027522647" target="_blank" >Download onze iOS App!</a></li>
+		<li><a href="https://play.google.com/store/apps/details?id=nl.lerengebaren.app" target="_blank" >Download onze Android App!</a></li>
+        <li><a style="display:block;font-size:16px;font-weight:500;text-align:center;border-radius:8px;padding:5px;text-decoration:none;" href="https://www.lerengebaren.nl/app/"><svg style="width:30px;height:20px;vertical-align:middle;margin:0px 5px;" viewBox="0 0 21 18" aria-hidden="true" focusable="false"><rect x="1" y="1" width="19" height="16" rx="3" fill="#12b5a8"></rect><rect x="3.2" y="6" width="14.6" height="8.8" rx="1.4" fill="#fff"></rect><circle cx="4.4" cy="3.6" r="0.9" fill="#fff"></circle><circle cx="7.2" cy="3.6" r="0.9" fill="#fff"></circle><circle cx="10" cy="3.6" r="0.9" fill="#fff"></circle><path d="M8.9 8.3v4.2l3.6-2.1z" fill="#12b5a8"></path></svg>Nieuwe website</a></li>
+</ul>
+<hr noshade>
+<ul class="nav nav-sidebar">
+         <li><a href="https://www.lerengebaren.nl/gebarenwoordenboek/" >Gebaar opzoeken</a></li>
+		<li><a href="https://www.lerengebaren.nl/gebarenboek/" >Gebarenwoordenboek</a></li>
+        <li><a href="https://www.lerengebaren.nl/gebarentaal/" >Gebarentaal Academie</a></li>
+		<li><a href="https://www.lerengebaren.nl/gebaren-plaatjes/"  >Gebaren - Plaatjes</a></li>		
+		<li><a href="https://www.lerengebaren.nl/gebaren-start/"  >Gebaren met thema's </a></li>	
+		<li><a href="https://www.lerengebaren.nl/gebaren-memory/" >Memoryspel met Gebaren</a></li>
+		<li><a href="https://www.lerengebaren.nl/gebaren-oefenen/" >Gebaren - Gesloten vragen</a></li>
+		<li><a href="https://www.lerengebaren.nl/oefenen-gebaren/" >Gebaren - Open vragen</a></li>
+		<li><a href="https://www.lerengebaren.nl/over-ons/">Informatie</a></li> 
+          </ul>
+        </div>
+		</div>
+		
+		
+		
+<nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand lg-logo" href="http://www.lerengebaren.nl">Lerengebaren.nl - Online Gebarentaal Leren</a>
+        </div>
+		<div class="hidden-sm hidden-md hidden-lg">
+        <div id="navbar" class="navbar-collapse collapse" align="right">
+          <ul class="nav navbar-nav navbar-right">
+              <li><a href="https://www.lerengebaren.nl/app/" >Nieuwe website</a></li>
+              <li><a href="https://www.lerengebaren.nl/gebarenwoordenboek/" >Gebaar opzoeken</a></li>
+		<li><a href="https://www.lerengebaren.nl/gebarenboek/" >Gebarenwoordenboek</a></li>
+        <li><a href="https://www.lerengebaren.nl/gebarentaal/" >Gebarentaal Academie</a></li>
+		<li><a href="https://www.lerengebaren.nl/gebaren-plaatjes/"  >Gebaren - Plaatjes</a></li>		
+		<li><a href="https://www.lerengebaren.nl/gebaren-start/"  >Gebaren met thema's </a></li>	
+		<li><a href="https://www.lerengebaren.nl/gebaren-memory/" >Memoryspel met Gebaren</a></li>
+		<li><a href="https://www.lerengebaren.nl/gebaren-oefenen/" >Gebaren - Gesloten vragen</a></li>
+		<li><a href="https://www.lerengebaren.nl/oefenen-gebaren/" >Gebaren - Open vragen</a></li>
+		<li><a href="https://www.lerengebaren.nl/over-ons/">Informatie</a></li> 
+		<li><a href="https://www.gebarenschool.nl" >Gebarenschool.nl</a></li>				  
+		<li><a href="https://www.gebarencursus.info" >Gebarencursus.info</a></li>
+          </ul>
+        </div>
+      </div>
+	  </div>
+    </nav>
+
+
+<div class="modal fade" id="subscribeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h3 class="modal-title" id="myModalLabel" align="center">Introductie Gebarenschool.nl</h3>
+            </div>
+            <div class="modal-body">
+                <h3>Online gebarentaal beheersen</h3>
+                Gebarentaal leren is geen makkelijke opgave en kost best veel tijd. Dankzij onze website Lerengebaren.nl hebben we afgelopen jaren expertisie ontwikkeld dat
+                we klaar voor zijn om gebarentaal aan te bieden! Dit doen we met online cursus, je kan het volgen via jouw computer, laptop, iPad en uiteraard smartphone. Het online
+                cursus bestaat uit filmpjes en daarbijhorende opdrachten. Af en toe interacteer je zelfs met een vriendelijke gebarendocent.
+                <br><br>
+		Op  <a href="http://www.gebarenschool.nl">http://www.gebarenschool.nl</a> kan je al beginnen met het leren van gebarentaal en dovencultuur. We bieden zelfs een week gratis proefaccount aan!
+            </div>
+            <div class="modal-footer">
+                <div align="center"><button type="button" class="btn btn-default" data-dismiss="modal">Sluiten</button></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $("#postcontent").submit(function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "subscribe.php",
+            data: $("#postcontent").serialize(),
+            success: function (response) {
+                $('[name="email"]').val('');
+                $('[name="lname"]').val('');
+                $('[name="fname"]').val('');
+
+                // alert(response); // FOR ACTUAL RESPONSE
+
+                $("#subscribeBox").html("<div><h2>Bedankt voor je aanmelding!</h2></div>");
+
+            }
+        });
+        e.preventDefault();
+    });
+
+
+    var checkPopup = getCookie("popup");
+    // Gebarenschool introduction popup switched off on 2026-10-05: the
+    // "nieuwe app" popup (app-modal.html) has taken its place.
+    if(false && checkPopup != "enabled")
+    {
+        $("#subscribeModal").modal("show");
+        setCookie("popup", "enabled", 30)
+    }
+
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+
+</script>
+
+<!-- Popup "De nieuwe LerenGebaren-app" (added 2026-10-05). Included at the end
+     of navbar.php, so it is on every page that has the navigation.
+     Self-contained: own styles and script, no jQuery or Bootstrap needed.
+     - Shown once per visitor, again after LG_APP_MODAL_DAYS days.
+     - LG_APP_MODAL_LIVE = false: only shown with ?nieuwe-app=1 in the address
+       (preview). Set to true to show it to every visitor.
+     - Videos and posters are the ones of /nieuwe-app/. -->
+<style>
+  .lgam-backdrop { position: fixed; inset: 0; top: 0; right: 0; bottom: 0; left: 0; z-index: 2000; background: rgba(15, 26, 28, .62); display: none; align-items: center; justify-content: center; padding: 16px; }
+  .lgam-backdrop.lgam-open { display: flex; }
+  .lgam-box { position: relative; width: 100%; max-width: 640px; max-height: calc(100vh - 32px); overflow-y: auto; -webkit-overflow-scrolling: touch; background: #fff; color: #1d2b2a; border-radius: 18px; padding: 26px 24px 22px; box-shadow: 0 18px 50px rgba(0, 0, 0, .3); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 16px; line-height: 1.5; text-align: left; }
+  .lgam-box h2 { margin: 0 44px 6px 0; font-size: 26px; line-height: 1.2; font-weight: 700; color: #0e968b; }
+  .lgam-lead { margin: 0 0 18px; font-size: 17px; color: #1d2b2a; }
+  .lgam-close { position: absolute; top: 14px; right: 14px; width: 44px; height: 44px; border: 0; border-radius: 50%; background: #e6f7f5; color: #1d2b2a; font-size: 24px; line-height: 44px; text-align: center; cursor: pointer; padding: 0; }
+  .lgam-close:hover, .lgam-close:focus { background: #cdeeea; outline: none; }
+  .lgam-videos { display: flex; gap: 14px; margin: 0 0 18px; }
+  .lgam-video { flex: 1 1 0; min-width: 0; }
+  .lgam-video video { display: block; width: 100%; height: auto; border-radius: 12px; background: #e6f7f5; }
+  .lgam-video p { margin: 8px 0 0; font-size: 14px; color: #5b6b69; }
+  .lgam-video strong { color: #1d2b2a; }
+  .lgam-stores { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 14px; }
+  .lgam-stores a { flex: 1 1 200px; display: block; text-align: center; text-decoration: none; font-weight: 700; font-size: 16px; padding: 14px 18px; border-radius: 12px; color: #fff; }
+  .lgam-stores a:hover, .lgam-stores a:focus { color: #fff; text-decoration: none; opacity: .92; }
+  .lgam-ios { background: #1d2b2a; }
+  .lgam-android { background: #12b5a8; }
+  .lgam-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 14px; }
+  .lgam-foot a { color: #0e968b; text-decoration: underline; }
+  .lgam-later { border: 0; background: none; color: #5b6b69; font-size: 14px; padding: 10px 4px; cursor: pointer; text-decoration: underline; }
+  @media (max-width: 560px) {
+    .lgam-box { padding: 22px 18px 18px; }
+    .lgam-box h2 { font-size: 22px; }
+    .lgam-videos { flex-direction: column; }
+  }
+</style>
+
+<div class="lgam-backdrop" id="lgam" role="dialog" aria-modal="true" aria-labelledby="lgam-title" aria-hidden="true">
+  <div class="lgam-box">
+    <button type="button" class="lgam-close" id="lgam-close" aria-label="Sluiten">&times;</button>
+    <h2 id="lgam-title">De nieuwe LerenGebaren-app is er!</h2>
+    <p class="lgam-lead">Gratis voor iPhone &eacute;n Android. Met lessen, zinnen en animaties.</p>
+
+    <div class="lgam-videos">
+      <div class="lgam-video">
+        <video muted loop playsinline preload="none" poster="/nieuwe-app/img/poster-gebaar.jpg" data-src="/nieuwe-app/video/gebaar.mp4"></video>
+        <p><strong>Gebaren leren met video.</strong> Dit is het gebaar voor trein.</p>
+      </div>
+      <div class="lgam-video">
+        <video muted loop playsinline preload="none" poster="/nieuwe-app/img/poster-zin.jpg" data-src="/nieuwe-app/video/zin.mp4"></video>
+        <p><strong>Zinnen oefenen, ook met een animatie.</strong> Zullen we een pizza maken?</p>
+      </div>
+    </div>
+
+    <div class="lgam-stores">
+      <a class="lgam-ios" id="lgam-ios" href="https://apps.apple.com/nl/app/leren-gebaren/id1027522647" target="_blank" rel="noopener">Download in de App Store</a>
+      <a class="lgam-android" id="lgam-android" href="https://play.google.com/store/apps/details?id=nl.lerengebaren.app" target="_blank" rel="noopener">Ontdek het op Google Play</a>
+    </div>
+
+    <div class="lgam-foot">
+      <a href="/nieuwe-app/">Meer over de nieuwe app</a>
+      <button type="button" class="lgam-later" id="lgam-later">Nu niet</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var LG_APP_MODAL_LIVE = true;    // false = preview only (?nieuwe-app=1)
+  var LG_APP_MODAL_DAYS = 14;      // show again after this many days
+  var KEY = 'lgAppModalSeen';
+
+  var box = document.getElementById('lgam');
+  if (!box) return;
+  var preview = /[?&]nieuwe-app=1(&|$)/.test(location.search);
+  if (!LG_APP_MODAL_LIVE && !preview) return;
+  if (location.pathname.indexOf('/nieuwe-app') === 0) return;
+
+  function seenRecently() {
+    try {
+      var t = parseInt(localStorage.getItem(KEY) || '0', 10);
+      return t > 0 && (Date.now() - t) < LG_APP_MODAL_DAYS * 86400000;
+    } catch (e) { return false; }
+  }
+  function remember() {
+    try { localStorage.setItem(KEY, String(Date.now())); } catch (e) {}
+  }
+  if (!preview && seenRecently()) return;
+
+  // A phone only gets the button for its own store first.
+  var ua = navigator.userAgent || '';
+  var ios = /iPhone|iPad|iPod/.test(ua), android = /Android/.test(ua);
+  if (ios) document.getElementById('lgam-android').style.display = 'none';
+  if (android) document.getElementById('lgam-ios').style.display = 'none';
+
+  var videos = box.getElementsByTagName('video');
+  var lastFocus = null;
+
+  function open() {
+    lastFocus = document.activeElement;
+    for (var i = 0; i < videos.length; i++) {
+      var v = videos[i];
+      if (!v.getAttribute('src')) v.setAttribute('src', v.getAttribute('data-src'));
+      var p = v.play();
+      if (p && p.catch) p.catch(function () {});
+    }
+    box.className = 'lgam-backdrop lgam-open';
+    box.setAttribute('aria-hidden', 'false');
+    document.getElementById('lgam-close').focus();
+    if (!preview) remember();
+  }
+  function close() {
+    for (var i = 0; i < videos.length; i++) videos[i].pause();
+    box.className = 'lgam-backdrop';
+    box.setAttribute('aria-hidden', 'true');
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  document.getElementById('lgam-close').onclick = close;
+  document.getElementById('lgam-later').onclick = close;
+  box.addEventListener('click', function (e) { if (e.target === box) close(); });
+  document.addEventListener('keydown', function (e) {
+    if (box.getAttribute('aria-hidden') === 'true') return;
+    if (e.key === 'Escape' || e.keyCode === 27) close();
+    if (e.key === 'Tab' || e.keyCode === 9) {
+      var f = box.querySelectorAll('button, a[href]');
+      var list = [];
+      for (var i = 0; i < f.length; i++) if (f[i].offsetParent !== null) list.push(f[i]);
+      if (!list.length) return;
+      var first = list[0], last = list[list.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+
+  // A short pause so the page itself is seen first.
+  setTimeout(open, preview ? 300 : 1500);
+})();
+</script>
+
+	
+	?>
+	  <script>
+	$(document).ready(function(){
+
+$( "#suggest1" ).autocomplete({
+    source: function(request, response){
+        $.ajax({
+            url: "https://www.lerengebaren.nl/json_array.php",
+            dataType: "json",
+            data: {
+                term: request.term
+            },
+            complete: function(data) {
+
+            outputArray = $.parseJSON(data.responseText);
+            var arr = [],
+                collection = [];
+            console.log(outputArray)
+                $.each(outputArray, function (index, value) {
+                    if ($.inArray(value.label, arr) == -1) {
+                        arr.push(value.label);
+                        collection.push(value);
+                    }
+                });
+            console.log(collection)
+            response(collection)
+            }
+        })
+        },
+    minLength: 3,
+    select: function( event, ui ) {
+        console.log(ui['item']['value']);
+        //window.location.href = "https://www.lerengebaren.nl/gebarenwoordenboek/"+ui['item']['value'];
+        myvideo.src="https://www.lerengebaren.nl/gebaren/"+ui['item']['value']+".m4v";
+        $("#woord_header").text(ui['item']['label']);
+        $("#suggest1").val(ui['item']['label']);
+        return false;
+    },
+    focus: function( event, ui ) {
+        $( "#suggest1" ).val( ui.item.label );
+        return false;
+    },
+});
+  });
+  
+  
+  
+  
+  </script>
+
+  <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h3 class="modal-title" id="myModalLabel" align="center">Gebarenwoordenboek</h3>
+            </div>
+            <div class="modal-body">
+                <h3>Eenvoudig</h3>
+				Lerengebaren.nl beschikt over database met ruim 3000 gestandaardiseerde gebaren. Door het invoeren van een zoekwoord kan je het snel vinden.
+				<h3>We vragen er geen geld voor</h3>
+				Je mag zoveel woorden opzoeken als je wil, we vragen geen kosten voor. Dus gebarentaal op deze manier leren is gratis!
+				<h3>Gebaar niet gevonden? Meld het ons!</h3>
+				Kon je geen gebaar vinden? Hindert niet, je kan ons mailen met een verzoek om de niet-gevonden gebaar alsnog in de database op te nemen!
+				
+            </div>
+            <div class="modal-footer">
+                <div align="center"><button type="button" class="btn btn-default" data-dismiss="modal">Sluiten</button></div>
+        </div>
+    </div>
+  </div>
+</div>
+ <div class="container-fluid extra-data" align="center">
+<div class="row-fluid">
+<h1>Gebarenwoordenboek</h1>				
+<h2>Zoek een gebaar in Gebarentaal!</h2>
+    
+	<h2><strong><div id="woord_header">Niet gevonden!</div></strong></h2></div>
+					<div class="wrapper">
+ <div class="videocontent">
+	<video id="myvideo" width="50%" autoplay onclick="afspelen()" controls="controls">
+	<source src="https://www.lerengebaren.nl/gebaren/.m4v" type='video/mp4' />
+</video>
+ </div>
+</div>				
+							<br>
+							<form action="" method="post" name="form1" class="form-inline" role="form">
+			<a href="#" class="btn btn-default btn-success" data-toggle="modal" data-target="#basicModal">Wat is dit?</a>
+			<input id="suggest1" name="q" value="Typ een zoekwoord!" onclick="make_blank();" class="form-control">
+		<button type="submit" class="btn btn-info">Zoeken</button>
+	</form>		
+	
+<a class="btn btn-danger" href="javascript:window.open('https://www.facebook.com/sharer/sharer.php?u=https://www.lerengebaren.nl/gebarenwoordenboek/zzqqxy&display=popup&ref=plugin','Gebaar delen op je Facebook','width=500,height=150')">Deel dit gebaar op Facebook.</a>
+         
+</div>	
+</div>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-25381074-1', 'auto');
+  ga('require', 'displayfeatures');
+  ga('send', 'pageview');
+  
+  function afspelen()
+  {
+  myvideo.play();
+  }
+
+</script>
+
+</body>
+</html>
+  
+<script type="text/javascript" src="//downloads.mailchimp.com/js/signup-forms/popup/embed.js" data-dojo-config="usePlainJson: true, isDebug: false"></script><script type="text/javascript">require(["mojo/signup-forms/Loader"], function(L) { L.start({"baseUrl":"mc.us15.list-manage.com","uuid":"4cd1ffbf480f297cf91a45f2e","lid":"410075f008"}) })</script>
