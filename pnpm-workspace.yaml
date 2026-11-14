@@ -1,0 +1,5 @@
+# Only install package versions that have been public for at least 3 days (4320 minutes).
+minimumReleaseAge: 4320
+
+# Never run install scripts of dependencies (also pass --ignore-scripts when installing).
+ignoreScripts: true
