@@ -93,7 +93,7 @@ Bindings: ASSETS, API_LIMIT (ratelimit). No storage bindings.
 4. **Deploy:**
    - `*.workers.dev`, with Workers Builds connected to GitHub.
    - **You** need to connect the repo once in the Cloudflare dashboard.
-   - PRs get preview URLs, and a smoke test runs against the preview.
+   - *Changed on 2026-11-14 at your request:* no preview builds. Test locally (`pnpm verify`), push to `main`, and Workers Builds deploys. Then smoke-test the live URL.
 5. **Report:** the PR description lists the axe, Lighthouse and manual test results.
 6. **Switching over:** the domain moves to the new Worker. You check it on your phone. Only then will I propose deleting the old Worker and the R2 files.
 

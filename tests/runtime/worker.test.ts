@@ -8,7 +8,8 @@ import { existsSync, mkdirSync } from 'node:fs';
 import { unstable_startWorker } from 'wrangler';
 
 type Started = Awaited<ReturnType<typeof unstable_startWorker>>;
-const quiet = { server: { port: 0 }, inspector: false as const, logLevel: 'error' as const };
+// No persisted local state: rate-limit counters and cached API answers from earlier runs must not leak into tests.
+const quiet = { server: { port: 0 }, inspector: false as const, logLevel: 'error' as const, persist: false as const };
 let app: Started;
 let harness: Started;
 let appUrl: URL;

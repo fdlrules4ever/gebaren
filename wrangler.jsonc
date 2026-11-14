@@ -5,7 +5,8 @@
   "main": "src/worker/index.ts",
   "compatibility_date": "2026-11-01",
   "workers_dev": true,
-  "preview_urls": true,
+  // Workflow: test locally, push to main, Workers Builds deploys. No preview versions.
+  "preview_urls": false,
 
   // The Svelte app (vite build) is served as static assets. Unknown paths such as /huis get index.html (deep links).
   // Only API and media paths run the Worker first.

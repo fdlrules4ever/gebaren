@@ -2,7 +2,7 @@
 
 Automated tests (axe, keyboard, reflow, target sizes) run with `pnpm test:e2e`. The checks below need a person with a real screen reader or phone.
 
-Run them on the preview URL, then fill in the results table at the bottom (and copy it into the PR).
+Run them on the live site (https://gebaren.franklippes.workers.dev, later https://gebaren.franklippes.com). For desktop tests you can also use the local app (`pnpm preview`, http://localhost:8787). Then fill in the results table at the bottom.
 
 Each test takes about 5 minutes.
 
@@ -39,7 +39,7 @@ Put the mouse away.
 
 ## 3. VoiceOver on an iPhone (Safari)
 
-1. Open the preview URL. The video plays in the page, not full screen, and loops.
+1. Open the live site. The video plays in the page, not full screen, and loops.
 2. Swipe through the page. Every button has a word (not only an icon).
 3. Double-tap **Volledig scherm**: the iPhone's own full-screen player opens. Close it.
 4. Search for `dank je` with the on-screen keyboard. The suggestions can be reached and chosen.

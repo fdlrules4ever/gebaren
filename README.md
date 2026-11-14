@@ -123,22 +123,46 @@ There are no secrets. If you ever need local secrets, put them in `.dev.vars` (t
 | `pnpm test:runtime` | Inside **workerd** (the real Workers runtime): the `HTMLRewriter` parser on saved pages (`tests/fixtures/`), the API and the media id checks. Run `pnpm build` first. |
 | `pnpm test:e2e` | Playwright with your installed Chrome, on desktop and Pixel 7. Covers: **axe** on every screen in light and dark, plus "more contrast" and reduced motion; reflow at 320 px; text at 200 %; target sizes; keyboard-only use; the player; favourites; the back button. Run `pnpm build` first. |
 | `pnpm smoke <url>` | Smoke test against a deployed URL: app shell, deep links, API, video byte ranges, headers |
+| `pnpm verify` | All of the above except the smoke test, in order. Run this before you push to `main`. |
+
+If the browser tests stop with "Timed out waiting … from config.webServer", a stuck `workerd.exe` from an earlier run is still holding port 8788. Close it (Task Manager, or `Get-NetTCPConnection -LocalPort 8788`), then run the tests again.
 
 The screen-reader checks (NVDA, TalkBack, VoiceOver) are done by hand. See [docs/manual-a11y-tests.md](docs/manual-a11y-tests.md).
 
 ## Deployment
 
-- **Production:** `main`, deployed by **Cloudflare Workers Builds**.
-- **Pull requests:** get a preview URL.
+Keep it simple: **test locally, then push to `main`.** Cloudflare Workers Builds builds and deploys every push to `main`. There are no preview builds or preview URLs.
 
-One-time setup in the Cloudflare dashboard:
-1. Go to *Workers & Pages* → *gebaren* → *Settings* → *Builds*.
-2. Connect the GitHub repo `fdlrules4ever/gebaren`.
-3. Build command: `pnpm install --ignore-scripts --frozen-lockfile && pnpm build`
-4. Deploy command: `npx wrangler deploy`
-5. Non-production branch deploy command: `npx wrangler versions upload` (this creates the PR preview URLs)
+1. Run every check locally (type checks, unit tests, build, workerd tests, browser tests):
 
-To deploy by hand:
+   ```bash
+   pnpm verify
+   ```
+
+2. Look at the app yourself on http://localhost:8787:
+
+   ```bash
+   pnpm preview
+   ```
+
+3. Push to `main`. Workers Builds deploys it.
+4. Smoke-test the live site:
+
+   ```bash
+   pnpm smoke https://gebaren.franklippes.com
+   ```
+
+**Workers Builds settings** (Workers & Pages → gebaren → Settings → Build):
+
+| Setting | Value |
+|---|---|
+| Git repository | `fdlrules4ever/gebaren` |
+| Production branch | `main` |
+| Build command | `pnpm install --ignore-scripts --frozen-lockfile && pnpm build` |
+| Deploy command | `npx wrangler deploy` |
+| Builds for non-production branches | off |
+
+To deploy by hand (if a build ever fails and you need a quick fix):
 
 ```bash
 pnpm deploy
