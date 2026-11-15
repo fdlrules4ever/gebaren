@@ -1,5 +1,8 @@
 <script lang="ts">
-  /** The keyboard shortcuts, always visible, with a switch to turn them off (WCAG 2.1.4). */
+  /**
+   * The keyboard shortcuts, with a switch to turn them off (WCAG 2.1.4).
+   * Shown on every device with a keyboard; on touch-only devices after the first real key press (see input.svelte.ts).
+   */
   import { saved, setPref } from '../lib/storage.svelte.ts';
   import { announce } from '../lib/status.svelte.ts';
   import Icon from './Icon.svelte';

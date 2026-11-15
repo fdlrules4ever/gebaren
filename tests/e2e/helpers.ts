@@ -1,9 +1,20 @@
+import { randomInt } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import type { Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
 const video = readFileSync(new URL('../../design/media/huis-a.mp4', import.meta.url));
 const poster = readFileSync(new URL('../../design/media/huis-a.png', import.meta.url));
+
+/**
+ * Makes each test its own visitor with its own client address, so the per-address rate limit (60 lookups a minute)
+ * counts per test instead of per run, just as it does for real visitors.
+ * Only `wrangler dev` keeps this header; on Cloudflare the real address always wins.
+ */
+export async function ownVisitor(page: Page): Promise<void> {
+  const part = (): number => randomInt(1, 255);
+  await page.setExtraHTTPHeaders({ 'cf-connecting-ip': `10.${part()}.${part()}.${part()}` });
+}
 
 /** Serves every sign video and poster from a local fixture, so tests do not depend on Signbank being up. */
 export async function mockMedia(page: Page): Promise<void> {

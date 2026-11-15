@@ -1,6 +1,6 @@
 /** Automated accessibility: axe (0 violations), reflow at 320 px, text at 200 %, target sizes, themes. */
 import { expect, test } from '@playwright/test';
-import { axe, mockMedia, overflowing, scrollsSideways } from './helpers.ts';
+import { axe, mockMedia, overflowing, ownVisitor, scrollsSideways } from './helpers.ts';
 
 const PAGES = [
   { name: 'start', path: '/' },
@@ -9,7 +9,7 @@ const PAGES = [
   { name: 'about', path: '/over-deze-site' },
 ];
 
-test.beforeEach(async ({ page }) => { await mockMedia(page); });
+test.beforeEach(async ({ page }) => { await ownVisitor(page); await mockMedia(page); });
 
 for (const scheme of ['light', 'dark'] as const) {
   for (const p of PAGES) {

@@ -3,6 +3,7 @@
   import { ABOUT_PATH, go, interceptLinks, router, wordPath } from './lib/router.svelte.ts';
   import { lookupSign, type Lookup } from './lib/api.ts';
   import { addRecent, saved } from './lib/storage.svelte.ts';
+  import { input } from './lib/input.svelte.ts';
   import { announce, status } from './lib/status.svelte.ts';
   import Icon from './components/Icon.svelte';
   import SearchBox from './components/SearchBox.svelte';
@@ -87,7 +88,9 @@
 <header class="top">
   <div class="wrap top__in">
     <a class="brand" href="/"><span class="brand__mark"><Icon name="hands" /></span>Gebaren</a>
-    <a class="help" href={showLists ? '#sneltoetsen' : '/#sneltoetsen'}><Icon name="keyboard" />Sneltoetsen</a>
+    {#if input.keyboard}
+      <a class="help" href={showLists ? '#sneltoetsen' : '/#sneltoetsen'}><Icon name="keyboard" />Sneltoetsen</a>
+    {/if}
     <div class="search-slot">
       <SearchBox bind:value={query} onsearch={(w) => go(wordPath(w))} />
     </div>
@@ -125,7 +128,7 @@
   {#if showLists}
     <div class="wrap">
       <Lists />
-      <Shortcuts />
+      {#if input.keyboard}<Shortcuts />{/if}
     </div>
   {/if}
 </main>
@@ -170,8 +173,8 @@
     .search-slot { grid-area: search; margin-top: 0; }
     .brand, .help { margin-top: 2.1rem; }
   }
-  /* On a phone, the example hint makes way for the video once a word is shown. */
-  @media (max-width: 40rem) {
+  /* On a phone (upright or on its side), the example hint makes way for the video once a word is shown. */
+  @media (max-width: 40rem), (orientation: landscape) and (max-height: 32rem) {
     :global([data-route='word']) .search-slot :global(.search__hint) { display: none; }
   }
 </style>

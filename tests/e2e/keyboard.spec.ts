@@ -1,8 +1,8 @@
 /** Keyboard-only use, the player controls, deep links and the lists on this device. */
 import { expect, test } from '@playwright/test';
-import { mockMedia } from './helpers.ts';
+import { mockMedia, ownVisitor } from './helpers.ts';
 
-test.beforeEach(async ({ page }) => { await mockMedia(page); });
+test.beforeEach(async ({ page }) => { await ownVisitor(page); await mockMedia(page); });
 
 test('skip link is the first stop and jumps to the content', async ({ page }) => {
   await page.goto('/huis');
@@ -66,8 +66,23 @@ test('player: Space pauses, speed and mirror are toggle buttons', async ({ page 
   expect(await page.locator('video').evaluate((v) => getComputedStyle(v).transform)).not.toBe('none');
 });
 
+test('touch only: the shortcuts help waits for a real keyboard', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile', 'touch devices only');
+  await page.goto('/huis');
+  await expect(page.getByRole('button', { name: 'Pauze' })).toBeVisible();
+  // Typing in the search field (an on-screen keyboard does that too) does not count.
+  await page.getByRole('combobox', { name: 'Zoek een woord' }).pressSequentially('huis');
+  await expect(page.getByRole('link', { name: 'Sneltoetsen' })).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Sneltoetsen' })).toHaveCount(0);
+  // Tab only comes from a real keyboard (or switch software): now the help and the on/off switch are there.
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('link', { name: 'Sneltoetsen' })).toBeVisible();
+  await expect(page.getByRole('checkbox', { name: 'Sneltoetsen aan' })).toBeAttached();
+});
+
 test('shortcuts can be switched off (WCAG 2.1.4)', async ({ page }) => {
   await page.goto('/huis');
+  await page.keyboard.press('Tab'); // on touch devices, the switch appears after the first real key press
   await page.getByRole('checkbox', { name: 'Sneltoetsen aan' }).uncheck();
   await page.locator('h1').click();
   await page.keyboard.press('r');

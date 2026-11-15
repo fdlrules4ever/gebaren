@@ -41,7 +41,7 @@ Put the mouse away.
 
 1. Open the live site. The video plays in the page, not full screen, and loops.
 2. Swipe through the page. Every button has a word (not only an icon).
-3. Double-tap **Volledig scherm**: the iPhone's own full-screen player opens. Close it.
+3. Double-tap **Volledig scherm**. The video fills the screen, and the controls are still in the swipe order. On an iPhone without full-screen support for pages, the iPhone's own player opens instead. Close it.
 4. Search for `dank je` with the on-screen keyboard. The suggestions can be reached and chosen.
 5. Settings → Accessibility → Motion → Reduce Motion: on. Reload: the video waits, and the button says **Afspelen**.
 6. Share → Add to Home Screen. Open it from the home screen: the app opens without the Safari address bar.
@@ -56,6 +56,14 @@ Repeat steps 1, 2 and 4 of the VoiceOver test with TalkBack. Also check that **B
 2. Nothing scrolls sideways. All controls are still there and usable; they may stack.
 3. Also set the browser's font size to *Very large* (Settings → Appearance). The text grows and nothing overlaps.
 
+## 6. Phone on its side (no screen reader)
+
+1. Open `/huis` and turn the phone sideways while the video plays. The page scrolls to the video, which fills the screen height. The controls sit along the bottom.
+2. Wait 3 seconds: the controls fade out. Tap the video: they come back. Tap again: they are gone.
+3. Tap **Pauze**: the controls stay until you play again.
+4. Tap **Volledig scherm**: the browser bars disappear too. The button now says **Volledig scherm uit**.
+5. There is no **Sneltoetsen** link on the phone. With a Bluetooth keyboard connected, press Tab: the link and the shortcuts section appear.
+
 ## Results
 
 | Test | Device / browser | Result | Notes |
@@ -65,3 +73,4 @@ Repeat steps 1, 2 and 4 of the VoiceOver test with TalkBack. Also check that **B
 | VoiceOver iPhone | | | |
 | TalkBack | | | |
 | 400 % zoom | | | |
+| Phone on its side | | | |

@@ -3,7 +3,13 @@
    * The video, as big as the screen allows, with our own large controls (all at least 44 px, icon plus text).
    * Muted, inline, looping. Autoplays unless the user asked for reduced motion (then it waits for "Afspelen").
    * mp4 videos use a <video> element; YouTube overrides use the privacy-friendly embed, steered with postMessage.
+   *
+   * Video mode (full screen, or a touch phone on its side): the video fills the screen and the controls float over it.
+   * While the video plays they fade out after 3 seconds, like most video apps. A tap on the video, a mouse move,
+   * a key press or keyboard focus brings them back; while paused, or while the keyboard is on them, they stay.
+   * Hidden controls stay in the accessibility tree, so screen readers can always reach them.
    */
+  import { untrack } from 'svelte';
   import type { SignResult } from '../../shared/types.ts';
   import { saved, setPref, type Speed } from '../lib/storage.svelte.ts';
   import { announce } from '../lib/status.svelte.ts';
@@ -23,6 +29,82 @@
   let frame = $state<HTMLIFrameElement>();
   let paused = $state(true);
   let failed = $state(false);
+  let controls = $state<HTMLDivElement>();
+
+  // Video mode: full screen, or a touch phone on its side (a small window or a zoomed-in desktop keeps the normal layout).
+  const SIDEWAYS = window.matchMedia('(orientation: landscape) and (max-height: 32rem) and (hover: none) and (pointer: coarse)');
+  const HIDE_AFTER_MS = 3000;
+  let sideways = $state(SIDEWAYS.matches);
+  let isFullscreen = $state(false);
+  let idle = $state(false);
+  const videoMode = $derived(isFullscreen || sideways);
+  const hideControls = $derived(videoMode && idle && !paused);
+  let hideTimer: ReturnType<typeof setTimeout> | undefined;
+  let mouse = false; // was the last pointer a mouse?
+  let inView = false; // is the player on screen?
+
+  /** Shows the controls, and in video mode starts the timer that fades them out again while the video plays. */
+  function wake(): void {
+    idle = false;
+    clearTimeout(hideTimer);
+    if (!videoMode || paused) return;
+    hideTimer = setTimeout(() => {
+      // Never hide them from under the keyboard or the mouse.
+      if (controls?.querySelector(':focus-visible') || (mouse && controls?.matches(':hover'))) wake();
+      else idle = true;
+    }, HIDE_AFTER_MS);
+  }
+
+  // Entering or leaving video mode, play and pause: show the controls (again).
+  $effect(() => {
+    void videoMode;
+    void paused;
+    untrack(wake);
+  });
+  $effect(() => () => clearTimeout(hideTimer));
+
+  $effect(() => {
+    const onFullscreen = (): void => { isFullscreen = wrapper !== undefined && document.fullscreenElement === wrapper; };
+    const onTurn = (): void => {
+      const turned = SIDEWAYS.matches && !sideways;
+      sideways = SIDEWAYS.matches;
+      // Turned the phone while watching: show the whole video (its exact top, ignoring the page's scroll padding).
+      if (turned && inView) requestAnimationFrame(() => { if (wrapper) scrollTo({ top: wrapper.getBoundingClientRect().top + scrollY }); });
+    };
+    document.addEventListener('fullscreenchange', onFullscreen);
+    SIDEWAYS.addEventListener('change', onTurn);
+    return () => {
+      document.removeEventListener('fullscreenchange', onFullscreen);
+      SIDEWAYS.removeEventListener('change', onTurn);
+    };
+  });
+
+  $effect(() => {
+    const el = wrapper;
+    if (!el) return;
+    const seen = new IntersectionObserver(([entry]) => { inView = entry?.isIntersecting ?? false; }, { threshold: 0.25 });
+    seen.observe(el);
+    // In video mode, a tap on the video shows the controls, or hides them again (like most video apps).
+    const onPointerDown = (e: PointerEvent): void => {
+      mouse = e.pointerType === 'mouse';
+      if (!videoMode) return;
+      if (hideControls || paused || mouse || controls?.contains(e.target as Node)) wake();
+      else { clearTimeout(hideTimer); idle = true; }
+    };
+    const onPointerMove = (e: PointerEvent): void => {
+      mouse = e.pointerType === 'mouse';
+      if (mouse && videoMode) wake();
+    };
+    el.addEventListener('pointerdown', onPointerDown);
+    el.addEventListener('pointermove', onPointerMove);
+    el.addEventListener('focusin', wake);
+    return () => {
+      seen.disconnect();
+      el.removeEventListener('pointerdown', onPointerDown);
+      el.removeEventListener('pointermove', onPointerMove);
+      el.removeEventListener('focusin', wake);
+    };
+  });
 
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let reduce = $state(motion.matches);
@@ -124,6 +206,7 @@
   }
 
   function onkeydown(e: KeyboardEvent): void {
+    if (videoMode) wake();
     if (!saved.prefs.shortcuts || e.ctrlKey || e.metaKey || e.altKey) return;
     const target = e.target as HTMLElement;
     if (target.closest('input, textarea, select, [contenteditable="true"]')) return;
@@ -143,7 +226,7 @@
 
 <svelte:window {onkeydown} />
 
-<div class="player" bind:this={wrapper}>
+<div class="player" class:video-mode={videoMode} class:hide-controls={hideControls} bind:this={wrapper}>
   <div class="stage" class:mirrored={saved.prefs.mirror}>
     {#if isYoutube}
       <div class="frame">
@@ -156,6 +239,10 @@
           onload={onYtLoad}
         ></iframe>
       </div>
+      {#if videoMode}
+        <!-- Taps on the embedded player never reach this page; this layer catches them (the embed has no controls). -->
+        <div class="tap" aria-hidden="true"></div>
+      {/if}
     {:else}
       <video
         bind:this={video}
@@ -184,7 +271,7 @@
     </p>
   {/if}
 
-  <div class="controls" role="group" aria-label="Video bedienen">
+  <div class="controls" role="group" aria-label="Video bedienen" bind:this={controls}>
     <button type="button" class="btn btn--primary ctl--main" onclick={toggle}>
       <Icon name={paused ? 'play' : 'pause'} />{paused ? 'Afspelen' : 'Pauze'}
     </button>
@@ -200,7 +287,9 @@
     <button type="button" class="btn" aria-pressed={saved.prefs.mirror} onclick={toggleMirror}>
       <Icon name="mirror" class="i i-off" /><Icon name="check" class="i i-on" />Spiegel
     </button>
-    <button type="button" class="btn" onclick={fullscreen}><Icon name="fullscreen" />Volledig scherm</button>
+    <button type="button" class="btn" onclick={fullscreen}>
+      <Icon name={isFullscreen ? 'fullscreen-exit' : 'fullscreen'} />{isFullscreen ? 'Volledig scherm uit' : 'Volledig scherm'}
+    </button>
   </div>
 </div>
 
@@ -246,11 +335,6 @@
   .seg[aria-pressed='true'] { background: var(--weak); box-shadow: inset 0 -0.25rem 0 var(--accent); }
   .seg :global(.i) { width: 1.1rem; height: 1.1rem; }
 
-  .player:fullscreen { display: flex; flex-direction: column; justify-content: center; gap: 1rem; padding: 1rem;
-    background: var(--bg); overflow: auto; }
-  .player:fullscreen .stage { width: 100%; max-width: none; }
-  .player:fullscreen video, .player:fullscreen .frame { width: min(100%, calc((100vh - 10rem) * 16 / 9)); }
-
   /* Phones: video edge to edge, controls in a grid. */
   @media (max-width: 40rem) {
     .stage { width: 100%; padding: 0; border-radius: 0; }
@@ -263,8 +347,10 @@
     .seg:nth-child(2) { border-left: 0; }
   }
 
-  /* Phone on its side: the video fills the height, controls beside it. */
-  @media (orientation: landscape) and (max-height: 32rem) {
+  /* Low and wide with a mouse or trackpad (a small window, or a desktop zoomed in): video and controls side by side.
+     A touch phone on its side gets video mode instead (below). */
+  @media (orientation: landscape) and (max-height: 32rem) and (hover: hover),
+    (orientation: landscape) and (max-height: 32rem) and (pointer: fine) {
     .player { display: grid; grid-template-columns: auto minmax(13rem, 1fr); gap: 1rem; align-items: start;
       padding-left: var(--gutter); padding-right: var(--gutter-r); }
     .stage { width: auto; padding: 0; border-radius: 0.6rem; }
@@ -275,4 +361,23 @@
     .seg + .seg { border-left: 0; border-top: 1px solid var(--line); }
     .failed { grid-column: 1 / -1; }
   }
+
+  /* Video mode: the video fills the screen (the browser sizes a full-screen element itself) and the controls
+     float over the bottom edge, on a solid bar so every label keeps its contrast. */
+  .player.video-mode { position: relative; display: flex; flex-direction: column; height: 100svh; padding: 0; background: var(--stage); }
+  .video-mode .stage { position: relative; flex: 1; min-height: 0; width: 100%; padding: 0; border-radius: 0; }
+  .video-mode video, .video-mode .frame { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; border-radius: 0; }
+  .tap { position: absolute; inset: 0; }
+  .video-mode .failed { position: absolute; z-index: 2; top: 1rem; left: var(--gutter); right: var(--gutter-r); width: auto; margin: 0; }
+  .video-mode .controls { position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; gap: 0.5rem; margin: 0;
+    padding: 0.6rem max(1rem, env(safe-area-inset-right, 0px)) max(0.6rem, env(safe-area-inset-bottom, 0px)) max(1rem, env(safe-area-inset-left, 0px));
+    background: var(--surface); border-top: 1px solid var(--line); transition: opacity 0.2s ease; }
+  .video-mode .ctl--main { min-width: 0; }
+  .video-mode .btn { min-height: 2.75rem; padding: 0.35rem 0.9rem; font-size: 1rem; }
+  .video-mode .seg, .video-mode .speed__label { font-size: 1rem; }
+  .video-mode .speed__label { padding-inline: 0.8rem; }
+  .video-mode .seg { padding-inline: 0.75rem; }
+  /* Faded out: no longer in the way of taps (a tap brings them back), but still there for screen readers and keyboards. */
+  .hide-controls .controls:not(:has(:focus-visible)) { opacity: 0; pointer-events: none; }
+  .hide-controls { cursor: none; }
 </style>
