@@ -13,6 +13,7 @@
   import type { SignResult } from '../../shared/types.ts';
   import { saved, setPref, type Speed } from '../lib/storage.svelte.ts';
   import { announce } from '../lib/status.svelte.ts';
+  import { input } from '../lib/input.svelte.ts';
   import Icon from './Icon.svelte';
 
   let { result, word, describedby }: { result: SignResult; word: string; describedby: string } = $props();
@@ -31,10 +32,12 @@
   let failed = $state(false);
   let controls = $state<HTMLDivElement>();
 
-  // Video mode: full screen, or a touch phone on its side (a small window or a zoomed-in desktop keeps the normal layout).
-  const SIDEWAYS = window.matchMedia('(orientation: landscape) and (max-height: 32rem) and (hover: none) and (pointer: coarse)');
+  // Video mode: full screen, or a phone or tablet on its side with a low screen.
+  // (A low window or a zoomed-in computer keeps the normal layout, with the controls beside the video.)
+  const LOW_AND_WIDE = window.matchMedia('(orientation: landscape) and (max-height: 32rem)');
+  const isSideways = (): boolean => input.touch && LOW_AND_WIDE.matches;
   const HIDE_AFTER_MS = 3000;
-  let sideways = $state(SIDEWAYS.matches);
+  let sideways = $state(isSideways());
   let isFullscreen = $state(false);
   let idle = $state(false);
   const videoMode = $derived(isFullscreen || sideways);
@@ -66,16 +69,17 @@
   $effect(() => {
     const onFullscreen = (): void => { isFullscreen = wrapper !== undefined && document.fullscreenElement === wrapper; };
     const onTurn = (): void => {
-      const turned = SIDEWAYS.matches && !sideways;
-      sideways = SIDEWAYS.matches;
+      const now = isSideways();
+      const turned = now && !sideways;
+      sideways = now;
       // Turned the phone while watching: show the whole video (its exact top, ignoring the page's scroll padding).
       if (turned && inView) requestAnimationFrame(() => { if (wrapper) scrollTo({ top: wrapper.getBoundingClientRect().top + scrollY }); });
     };
     document.addEventListener('fullscreenchange', onFullscreen);
-    SIDEWAYS.addEventListener('change', onTurn);
+    LOW_AND_WIDE.addEventListener('change', onTurn);
     return () => {
       document.removeEventListener('fullscreenchange', onFullscreen);
-      SIDEWAYS.removeEventListener('change', onTurn);
+      LOW_AND_WIDE.removeEventListener('change', onTurn);
     };
   });
 
@@ -189,6 +193,13 @@
     announce(`Snelheid: ${SPEEDS.find((s) => s.value === value)?.label ?? ''}.`);
   }
 
+  // Video mode has one speed button that steps through the speeds, so all controls fit on one row.
+  const speedLabel = $derived(SPEEDS.find((s) => s.value === saved.prefs.speed)?.label ?? 'Normaal');
+  function nextSpeed(): void {
+    const i = SPEEDS.findIndex((s) => s.value === saved.prefs.speed);
+    setSpeed(SPEEDS[(i + 1) % SPEEDS.length]!.value);
+  }
+
   function toggleMirror(): void {
     const on = !saved.prefs.mirror;
     setPref('mirror', on);
@@ -272,23 +283,30 @@
   {/if}
 
   <div class="controls" role="group" aria-label="Video bedienen" bind:this={controls}>
+    <!-- .fit keeps room for the longest label, so the buttons do not jump when a label changes. -->
     <button type="button" class="btn btn--primary ctl--main" onclick={toggle}>
-      <Icon name={paused ? 'play' : 'pause'} />{paused ? 'Afspelen' : 'Pauze'}
+      <Icon name={paused ? 'play' : 'pause'} /><span class="fit" data-widest="Afspelen"><span>{paused ? 'Afspelen' : 'Pauze'}</span></span>
     </button>
     <button type="button" class="btn" onclick={replay}><Icon name="replay" />Opnieuw</button>
-    <div class="speed" role="group" aria-labelledby="snelheid-label">
-      <span class="speed__label" id="snelheid-label">Snelheid</span>
-      {#each SPEEDS as s (s.value)}
-        <button type="button" class="seg" aria-pressed={saved.prefs.speed === s.value} onclick={() => setSpeed(s.value)}>
-          <Icon name="check" class="i i-on" />{s.label}
-        </button>
-      {/each}
-    </div>
+    {#if videoMode}
+      <button type="button" class="btn" onclick={nextSpeed}>
+        <Icon name="speed" /><span class="sr-only">Snelheid:&#32;</span><span class="fit" data-widest="Heel langzaam"><span>{speedLabel}</span></span>
+      </button>
+    {:else}
+      <div class="speed" role="group" aria-labelledby="snelheid-label">
+        <span class="speed__label" id="snelheid-label">Snelheid</span>
+        {#each SPEEDS as s (s.value)}
+          <button type="button" class="seg" aria-pressed={saved.prefs.speed === s.value} onclick={() => setSpeed(s.value)}>
+            <Icon name="check" class="i i-on" />{s.label}
+          </button>
+        {/each}
+      </div>
+    {/if}
     <button type="button" class="btn" aria-pressed={saved.prefs.mirror} onclick={toggleMirror}>
       <Icon name="mirror" class="i i-off" /><Icon name="check" class="i i-on" />Spiegel
     </button>
-    <button type="button" class="btn" onclick={fullscreen}>
-      <Icon name={isFullscreen ? 'fullscreen-exit' : 'fullscreen'} />{isFullscreen ? 'Volledig scherm uit' : 'Volledig scherm'}
+    <button type="button" class="btn" aria-pressed={isFullscreen} onclick={fullscreen}>
+      <Icon name="fullscreen" class="i i-off" /><Icon name="fullscreen-exit" class="i i-on" />Volledig scherm
     </button>
   </div>
 </div>
@@ -334,6 +352,9 @@
   .seg:hover { background: var(--weak); }
   .seg[aria-pressed='true'] { background: var(--weak); box-shadow: inset 0 -0.25rem 0 var(--accent); }
   .seg :global(.i) { width: 1.1rem; height: 1.1rem; }
+  .fit { display: inline-grid; justify-items: start; }
+  .fit > span, .fit::after { grid-area: 1 / 1; }
+  .fit::after { content: attr(data-widest); visibility: hidden; }
 
   /* Phones: video edge to edge, controls in a grid. */
   @media (max-width: 40rem) {
@@ -347,36 +368,33 @@
     .seg:nth-child(2) { border-left: 0; }
   }
 
-  /* Low and wide with a mouse or trackpad (a small window, or a desktop zoomed in): video and controls side by side.
-     A touch phone on its side gets video mode instead (below). */
-  @media (orientation: landscape) and (max-height: 32rem) and (hover: hover),
-    (orientation: landscape) and (max-height: 32rem) and (pointer: fine) {
-    .player { display: grid; grid-template-columns: auto minmax(13rem, 1fr); gap: 1rem; align-items: start;
+  /* Low and wide, not in video mode (a low window, or a computer zoomed in): video and controls side by side.
+     (Phones on their side and full screen use video mode, below. Not keyed to hover/pointer: some phones claim a mouse.) */
+  @media (orientation: landscape) and (max-height: 32rem) {
+    .player:not(.video-mode) { display: grid; grid-template-columns: auto minmax(13rem, 1fr); gap: 1rem; align-items: start;
       padding-left: var(--gutter); padding-right: var(--gutter-r); }
-    .stage { width: auto; padding: 0; border-radius: 0.6rem; }
-    video, .frame { width: min(100%, calc((100svh - 1.5rem) * 16 / 9)); }
-    .controls { display: grid; grid-template-columns: 1fr; margin-top: 0; padding: 0; }
-    .speed { display: grid; grid-template-columns: 1fr; }
-    .speed__label { border-right: 0; border-bottom: 1px solid var(--line); }
-    .seg + .seg { border-left: 0; border-top: 1px solid var(--line); }
-    .failed { grid-column: 1 / -1; }
+    .player:not(.video-mode) .stage { width: auto; padding: 0; border-radius: 0.6rem; }
+    .player:not(.video-mode) video, .player:not(.video-mode) .frame { width: min(100%, calc((100svh - 1.5rem) * 16 / 9)); }
+    .player:not(.video-mode) .controls { display: grid; grid-template-columns: 1fr; margin-top: 0; padding: 0; }
+    .player:not(.video-mode) .speed { display: grid; grid-template-columns: 1fr; }
+    .player:not(.video-mode) .speed__label { border-right: 0; border-bottom: 1px solid var(--line); }
+    .player:not(.video-mode) .seg + .seg { border-left: 0; border-top: 1px solid var(--line); }
+    .player:not(.video-mode) .failed { grid-column: 1 / -1; }
   }
 
   /* Video mode: the video fills the screen (the browser sizes a full-screen element itself) and the controls
-     float over the bottom edge, on a solid bar so every label keeps its contrast. */
+     float over the bottom edge as one slim row (two when upright), on a solid bar so every label keeps its contrast. */
   .player.video-mode { position: relative; display: flex; flex-direction: column; height: 100svh; padding: 0; background: var(--stage); }
   .video-mode .stage { position: relative; flex: 1; min-height: 0; width: 100%; padding: 0; border-radius: 0; }
   .video-mode video, .video-mode .frame { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; border-radius: 0; }
   .tap { position: absolute; inset: 0; }
   .video-mode .failed { position: absolute; z-index: 2; top: 1rem; left: var(--gutter); right: var(--gutter-r); width: auto; margin: 0; }
-  .video-mode .controls { position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; gap: 0.5rem; margin: 0;
-    padding: 0.6rem max(1rem, env(safe-area-inset-right, 0px)) max(0.6rem, env(safe-area-inset-bottom, 0px)) max(1rem, env(safe-area-inset-left, 0px));
+  .video-mode .controls { position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; display: flex; flex-wrap: wrap;
+    justify-content: center; gap: 0.5rem; margin: 0;
+    padding: 0.5rem max(0.75rem, env(safe-area-inset-right, 0px)) max(0.5rem, env(safe-area-inset-bottom, 0px)) max(0.75rem, env(safe-area-inset-left, 0px));
     background: var(--surface); border-top: 1px solid var(--line); transition: opacity 0.2s ease; }
   .video-mode .ctl--main { min-width: 0; }
-  .video-mode .btn { min-height: 2.75rem; padding: 0.35rem 0.9rem; font-size: 1rem; }
-  .video-mode .seg, .video-mode .speed__label { font-size: 1rem; }
-  .video-mode .speed__label { padding-inline: 0.8rem; }
-  .video-mode .seg { padding-inline: 0.75rem; }
+  .video-mode .btn { min-height: 2.75rem; gap: 0.45rem; padding: 0.3rem 0.75rem; font-size: 0.9375rem; }
   /* Faded out: no longer in the way of taps (a tap brings them back), but still there for screen readers and keyboards. */
   .hide-controls .controls:not(:has(:focus-visible)) { opacity: 0; pointer-events: none; }
   .hide-controls { cursor: none; }

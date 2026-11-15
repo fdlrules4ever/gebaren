@@ -1,7 +1,7 @@
 <script lang="ts">
   /** Decorative icons. Every icon in the app sits next to a visible text label. */
   export type IconName =
-    | 'search' | 'play' | 'pause' | 'replay' | 'mirror' | 'fullscreen' | 'fullscreen-exit' | 'star' | 'clock' | 'keyboard' | 'external'
+    | 'search' | 'play' | 'pause' | 'replay' | 'mirror' | 'fullscreen' | 'fullscreen-exit' | 'speed' | 'star' | 'clock' | 'keyboard' | 'external'
     | 'info' | 'notfound' | 'alert' | 'check' | 'hands' | 'retry' | 'wifi-off';
 
   let { name, class: className = 'i' }: { name: IconName; class?: string } = $props();
@@ -23,6 +23,8 @@
     <path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" />
   {:else if name === 'fullscreen-exit'}
     <path d="M9 4v5H4M15 4v5h5M20 15h-5v5M4 15h5v5" />
+  {:else if name === 'speed'}
+    <path d="M3.8 17.5a8.6 8.6 0 1 1 16.4 0" /><path d="m12 14.5 4-5" /><circle cx="12" cy="14.5" r="1.2" fill="currentColor" />
   {:else if name === 'star'}
     <path d="m12 3.6 2.6 5.3 5.8.85-4.2 4.1 1 5.8L12 16.9l-5.2 2.75 1-5.8-4.2-4.1 5.8-.85z" />
   {:else if name === 'clock'}

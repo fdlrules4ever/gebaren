@@ -58,10 +58,10 @@ Repeat steps 1, 2 and 4 of the VoiceOver test with TalkBack. Also check that **B
 
 ## 6. Phone on its side (no screen reader)
 
-1. Open `/huis` and turn the phone sideways while the video plays. The page scrolls to the video, which fills the screen height. The controls sit along the bottom.
+1. Open `/huis` and turn the phone sideways while the video plays. The page scrolls to the video, which fills the screen height. The controls sit along the bottom in one slim row.
 2. Wait 3 seconds: the controls fade out. Tap the video: they come back. Tap again: they are gone.
 3. Tap **Pauze**: the controls stay until you play again.
-4. Tap **Volledig scherm**: the browser bars disappear too. The button now says **Volledig scherm uit**.
+4. Tap **Volledig scherm**: the browser bars disappear too, and the button shows as switched on. Tap the speed button: it steps through Normaal, Langzaam and Heel langzaam.
 5. There is no **Sneltoetsen** link on the phone. With a Bluetooth keyboard connected, press Tab: the link and the shortcuts section appear.
 
 ## Results

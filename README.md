@@ -51,13 +51,15 @@ Worker "gebaren" (run_worker_first: /api/*, /video/*, /poster/*)
   - An article in front is ignored ("het huis").
   - Small typos and other word forms become "Bedoel je …?".
   - Compound words are split into known parts.
-- **Video mode** (full screen, or a touch phone held sideways):
-  - The video fills the screen and the controls float over its bottom edge.
+- **Video mode** (full screen, or a phone or tablet held sideways):
+  - The video fills the screen and the controls float over its bottom edge, in one slim row (two or three rows when the phone is upright).
+  - To fit, the three speed buttons become one button that steps through Normaal, Langzaam and Heel langzaam. Volledig scherm is an on/off button, like Spiegel.
   - While the video plays, the controls fade out after 3 seconds, like most video apps. A tap on the video, a mouse move, a key press or keyboard focus brings them back. A second tap hides them again.
   - They stay while the video is paused or while the keyboard is on them. Faded controls stay in the accessibility tree.
   - Turning the phone while watching scrolls the whole video into view. The app never forces the screen to rotate (WCAG 1.3.4).
 - **Shortcuts help only with a keyboard:**
-  - On a touch-only device, the Sneltoetsen link and section stay hidden until the first key that an on-screen keyboard does not send (Tab, arrows, Escape, or any key outside a text field).
+  - On a phone or tablet, the Sneltoetsen link and section stay hidden until the first key that an on-screen keyboard does not send (Tab, arrows, Escape, or any key outside a text field).
+  - Phones and tablets are recognised by device type, not by the `hover`/`pointer` media features: Samsung Internet on Galaxy phones claims a mouse that can hover.
   - The shortcuts themselves always work.
 - **Errors:**
   - invalid input → `400`
@@ -221,7 +223,7 @@ All of these are dev dependencies. Each one is listed with its reason.
 ## Accessibility results
 
 Last run: 2026-11-15.
-- `pnpm test:e2e`: **60 passed**, with **0 axe violations** on every screen, both themes and video mode. Another 6 tests are phone-only or desktop-only, so each skips in the other project.
+- `pnpm test:e2e`: **62 passed**, with **0 axe violations** on every screen, both themes and video mode. Another 8 tests are phone-only or desktop-only, so each skips in the other project.
 - Manual results and Lighthouse scores go in the PR description.
 
 ## Deliberate shortcuts
