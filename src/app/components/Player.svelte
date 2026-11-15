@@ -8,6 +8,9 @@
    * While the video plays they fade out after 3 seconds, like most video apps. A tap on the video, a mouse move,
    * a key press or keyboard focus brings them back; while paused, or while the keyboard is on them, they stay.
    * Hidden controls stay in the accessibility tree, so screen readers can always reach them.
+   *
+   * A click or tap on the video pauses or plays it, like most players. In video mode a tap on a touch screen
+   * shows or hides the controls instead (a mouse click there still pauses or plays).
    */
   import { untrack } from 'svelte';
   import type { SignResult } from '../../shared/types.ts';
@@ -31,6 +34,7 @@
   let paused = $state(true);
   let failed = $state(false);
   let controls = $state<HTMLDivElement>();
+  let stage = $state<HTMLDivElement>();
 
   // Video mode: full screen, or a phone or tablet on its side with a low screen.
   // (A low window or a zoomed-in computer keeps the normal layout, with the controls beside the video.)
@@ -99,16 +103,35 @@
       mouse = e.pointerType === 'mouse';
       if (mouse && videoMode) wake();
     };
+    // A click on the video pauses or plays it, like most players (the Pauze button and Space do the same).
+    // Except a tap in video mode: that shows or hides the controls (above), as in most video apps.
+    const onClick = (e: MouseEvent): void => {
+      if (!stage?.contains(e.target as Node) || (videoMode && !mouse)) return;
+      showFlash(paused ? 'play' : 'pause');
+      toggle();
+    };
     el.addEventListener('pointerdown', onPointerDown);
     el.addEventListener('pointermove', onPointerMove);
+    el.addEventListener('click', onClick);
     el.addEventListener('focusin', wake);
     return () => {
       seen.disconnect();
       el.removeEventListener('pointerdown', onPointerDown);
       el.removeEventListener('pointermove', onPointerMove);
+      el.removeEventListener('click', onClick);
       el.removeEventListener('focusin', wake);
     };
   });
+
+  // A short play or pause sign in the middle of the video after a click, so you see that it worked.
+  let flash = $state<{ icon: 'play' | 'pause'; id: number } | null>(null);
+  let flashTimer: ReturnType<typeof setTimeout> | undefined;
+  function showFlash(icon: 'play' | 'pause'): void {
+    flash = { icon, id: (flash?.id ?? 0) + 1 };
+    clearTimeout(flashTimer);
+    flashTimer = setTimeout(() => { flash = null; }, 700);
+  }
+  $effect(() => () => clearTimeout(flashTimer));
 
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let reduce = $state(motion.matches);
@@ -238,7 +261,7 @@
 <svelte:window {onkeydown} />
 
 <div class="player" class:video-mode={videoMode} class:hide-controls={hideControls} bind:this={wrapper}>
-  <div class="stage" class:mirrored={saved.prefs.mirror}>
+  <div class="stage" class:mirrored={saved.prefs.mirror} bind:this={stage}>
     {#if isYoutube}
       <div class="frame">
         <iframe
@@ -250,10 +273,8 @@
           onload={onYtLoad}
         ></iframe>
       </div>
-      {#if videoMode}
-        <!-- Taps on the embedded player never reach this page; this layer catches them (the embed has no controls). -->
-        <div class="tap" aria-hidden="true"></div>
-      {/if}
+      <!-- Clicks on the embedded player never reach this page; this layer catches them (the embed has no controls). -->
+      <div class="tap" aria-hidden="true"></div>
     {:else}
       <video
         bind:this={video}
@@ -270,6 +291,11 @@
         onloadedmetadata={start}
         onerror={() => { failed = true; paused = true; }}
       ></video>
+    {/if}
+    {#if flash}
+      {#key flash.id}
+        <div class="flash" aria-hidden="true"><Icon name={flash.icon} /></div>
+      {/key}
     {/if}
   </div>
 
@@ -333,6 +359,14 @@
   .frame { overflow: hidden; }
   iframe { width: 100%; height: 100%; border: 0; }
   .mirrored video, .mirrored iframe { transform: scaleX(-1); }
+  .stage { position: relative; cursor: pointer; }
+  .tap { position: absolute; inset: 0; }
+  /* The play or pause sign after a click on the video: on its own dark disc, so it shows on any video and theme. */
+  .flash { position: absolute; left: 50%; top: 50%; translate: -50% -50%; display: grid; place-items: center;
+    width: 4.5rem; height: 4.5rem; border-radius: 50%; background: rgb(0 0 0 / 0.6); color: #fff; pointer-events: none;
+    animation: flash-out 0.7s ease-out forwards; }
+  .flash :global(.i) { width: 2rem; height: 2rem; }
+  @keyframes flash-out { from { opacity: 1; scale: 1; } to { opacity: 0; scale: 1.3; } }
 
   .failed { display: flex; gap: 0.6rem; align-items: flex-start; width: min(100% - 2rem, 70rem); margin: 0.75rem auto 0;
     padding: 0.75rem 1rem; background: var(--surface); border: 2px solid var(--focus); border-radius: var(--radius); }
@@ -387,7 +421,6 @@
   .player.video-mode { position: relative; display: flex; flex-direction: column; height: 100svh; padding: 0; background: var(--stage); }
   .video-mode .stage { position: relative; flex: 1; min-height: 0; width: 100%; padding: 0; border-radius: 0; }
   .video-mode video, .video-mode .frame { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; border-radius: 0; }
-  .tap { position: absolute; inset: 0; }
   .video-mode .failed { position: absolute; z-index: 2; top: 1rem; left: var(--gutter); right: var(--gutter-r); width: auto; margin: 0; }
   .video-mode .controls { position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; display: flex; flex-wrap: wrap;
     justify-content: center; gap: 0.5rem; margin: 0;
@@ -397,5 +430,5 @@
   .video-mode .btn { min-height: 2.75rem; gap: 0.45rem; padding: 0.3rem 0.75rem; font-size: 0.9375rem; }
   /* Faded out: no longer in the way of taps (a tap brings them back), but still there for screen readers and keyboards. */
   .hide-controls .controls:not(:has(:focus-visible)) { opacity: 0; pointer-events: none; }
-  .hide-controls { cursor: none; }
+  .hide-controls, .hide-controls .stage { cursor: none; }
 </style>

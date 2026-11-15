@@ -15,6 +15,20 @@ async function tabIntoControls(page: Page): Promise<void> {
   throw new Error('Tab never reached the player controls');
 }
 
+test('a click or tap on the video pauses and plays it', async ({ page }, testInfo) => {
+  await page.goto('/huis');
+  const video = page.locator('video');
+  await expect(page.getByRole('button', { name: 'Pauze' })).toBeVisible();
+  const press = (): Promise<void> => (testInfo.project.name === 'mobile' ? video.tap() : video.click());
+  await press();
+  await expect(page.getByRole('button', { name: 'Afspelen' })).toBeVisible();
+  expect(await video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
+  await expect(page.locator('.flash')).toBeAttached(); // the short pause sign
+  await press();
+  await expect(page.getByRole('button', { name: 'Pauze' })).toBeVisible();
+  expect(await video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(false);
+});
+
 test('full screen: the video fills the screen and the controls float over it', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop', 'desktop browser');
   await page.goto('/huis');
@@ -28,6 +42,8 @@ test('full screen: the video fills the screen and the controls float over it', a
   expect(Math.round(video?.height ?? 0)).toBe(screen.h);
   expect(Math.round(video?.width ?? 0)).toBe(screen.w);
   expect((await page.locator('.controls').boundingBox())?.height ?? 999).toBeLessThan(70); // one slim row
+  await page.locator('video').click(); // a mouse click pauses, also in full screen
+  await expect(page.getByRole('button', { name: 'Afspelen' })).toBeVisible();
   await button.click();
   await expect(button).toHaveAttribute('aria-pressed', 'false');
   await expect(page.locator('.player')).not.toHaveClass(/video-mode/u);
@@ -77,6 +93,7 @@ test.describe('phone on its side', () => {
     await expect(controls).toHaveCSS('opacity', '1');
     await page.locator('video').tap();
     await expect(controls).toHaveCSS('opacity', '0');
+    expect(await page.locator('video').evaluate((v: HTMLVideoElement) => v.paused)).toBe(false); // taps never paused it
   });
 
   test('controls stay while paused and while the keyboard is on them', async ({ page }) => {

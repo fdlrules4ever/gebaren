@@ -62,7 +62,8 @@ Repeat steps 1, 2 and 4 of the VoiceOver test with TalkBack. Also check that **B
 2. Wait 3 seconds: the controls fade out. Tap the video: they come back. Tap again: they are gone.
 3. Tap **Pauze**: the controls stay until you play again.
 4. Tap **Volledig scherm**: the browser bars disappear too, and the button shows as switched on. Tap the speed button: it steps through Normaal, Langzaam and Heel langzaam.
-5. There is no **Sneltoetsen** link on the phone. With a Bluetooth keyboard connected, press Tab: the link and the shortcuts section appear.
+5. Turn the phone upright again and tap the video: it pauses, with a short pause sign. Tap again: it plays.
+6. There is no **Sneltoetsen** link on the phone. With a Bluetooth keyboard connected, press Tab: the link and the shortcuts section appear.
 
 ## Results
 
